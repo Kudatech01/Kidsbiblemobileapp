@@ -34,9 +34,46 @@
   <style>
     body { font-family: 'Nunito', sans-serif; }
     .hidden { display: none; }
+    
+    /* Sound Control Button */
+    .sound-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid #6366f1;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sound-control:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .sound-control.muted {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: #999;
+    }
+    
+    .sound-control.muted i {
+      color: #999;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+  <!-- Sound Control Button -->
+  <div id="sound-control" class="sound-control" title="Toggle Sound">
+    <i class="fa-solid fa-volume-high text-xl text-blue-600"></i>
+  </div>
   <!-- Header with Verse of the Day -->
   <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6 shadow-lg">
     <div class="container max-w-4xl mx-auto px-4">
@@ -399,6 +436,12 @@
     function launchConfetti(targetId) {
       const container = document.getElementById(targetId);
       if (!container) return;
+      
+      // Play confetti sound
+      if (window.playSound) {
+        window.playSound('confetti');
+      }
+      
       const confetti = document.createElement('div');
       confetti.style.position = 'absolute';
       confetti.style.left = '0';
@@ -481,6 +524,144 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Sound Effects System
+      let soundEnabled = true;
+      const soundControl = document.getElementById('sound-control');
+      
+      // Sound effect definitions using Web Audio API
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const soundEffects = {
+        // Navigation sounds
+        nav: () => playTone(800, 0.1, 0.1),
+        click: () => playTone(600, 0.05, 0.1),
+        
+        // Game sounds
+        correct: () => playSuccessChord(),
+        incorrect: () => playErrorTone(),
+        win: () => playVictoryFanfare(),
+        match: () => playTone(1000, 0.2, 0.1),
+        move: () => playTone(400, 0.1, 0.1),
+        drop: () => playTone(300, 0.15, 0.1),
+        
+        // UI sounds
+        button: () => playTone(500, 0.05, 0.1),
+        hover: () => playTone(700, 0.03, 0.1),
+        open: () => playTone(600, 0.2, 0.1),
+        close: () => playTone(400, 0.2, 0.1),
+        
+        // Special sounds
+        confetti: () => playSparkleSound(),
+        verse: () => playTone(800, 0.3, 0.1),
+        story: () => playTone(600, 0.4, 0.1),
+        game: () => playTone(900, 0.2, 0.1)
+      };
+      
+      function playTone(frequency, duration, volume = 0.1) {
+        if (!soundEnabled) return;
+        
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + duration);
+      }
+      
+      function playSuccessChord() {
+        if (!soundEnabled) return;
+        
+        const frequencies = [523, 659, 784]; // C, E, G
+        frequencies.forEach((freq, index) => {
+          setTimeout(() => playTone(freq, 0.3, 0.1), index * 100);
+        });
+      }
+      
+      function playErrorTone() {
+        if (!soundEnabled) return;
+        
+        playTone(200, 0.1, 0.1);
+        setTimeout(() => playTone(150, 0.1, 0.1), 100);
+      }
+      
+      function playVictoryFanfare() {
+        if (!soundEnabled) return;
+        
+        const notes = [523, 659, 784, 1047, 784, 1047]; // C, E, G, C, G, C
+        notes.forEach((freq, index) => {
+          setTimeout(() => playTone(freq, 0.2, 0.1), index * 150);
+        });
+      }
+      
+      function playSparkleSound() {
+        if (!soundEnabled) return;
+        
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            playTone(800 + Math.random() * 400, 0.1, 0.05);
+          }, i * 50);
+        }
+      }
+      
+      // Global sound function
+      window.playSound = function(type) {
+        if (soundEffects[type]) {
+          soundEffects[type]();
+        }
+      };
+      
+      // Sound control functionality
+      soundControl.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        
+        if (soundEnabled) {
+          soundControl.classList.remove('muted');
+          soundControl.querySelector('i').className = 'fa-solid fa-volume-high text-xl text-blue-600';
+          soundControl.title = 'Mute Sound';
+          playSound('button');
+        } else {
+          soundControl.classList.add('muted');
+          soundControl.querySelector('i').className = 'fa-solid fa-volume-mute text-xl text-gray-500';
+          soundControl.title = 'Unmute Sound';
+        }
+        
+        // Save preference
+        localStorage.setItem('littleDisciplesSound', soundEnabled);
+      });
+      
+      // Load sound preference
+      const savedSound = localStorage.getItem('littleDisciplesSound');
+      if (savedSound !== null) {
+        soundEnabled = savedSound === 'true';
+        if (!soundEnabled) {
+          soundControl.classList.add('muted');
+          soundControl.querySelector('i').className = 'fa-solid fa-volume-mute text-xl text-gray-500';
+          soundControl.title = 'Unmute Sound';
+        }
+      }
+      
+      // Add sound effects to navigation
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => playSound('nav'));
+        tab.addEventListener('mouseenter', () => playSound('hover'));
+      });
+      
+      // Add sound effects to buttons
+      document.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON' && !e.target.classList.contains('nav-tab')) {
+          playSound('button');
+        }
+      });
+      
       // Verse of the Day functionality
       const dailyVerses = [
         { text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", reference: "John 3:16" },
@@ -530,6 +711,7 @@
 
       // Share verse functionality
       document.getElementById('share-verse').onclick = () => {
+        playSound('button');
         const verseText = document.querySelector('#verse-content .text-lg').textContent;
         const verseRef = document.querySelector('#verse-content .text-sm').textContent;
         const shareText = `${verseText} - ${verseRef}`;
@@ -549,10 +731,14 @@
       };
 
       // Refresh verse button
-      document.getElementById('refresh-verse').onclick = generateRandomVerse;
+      document.getElementById('refresh-verse').onclick = () => {
+        playSound('verse');
+        generateRandomVerse();
+      };
       
       // Verses page functionality
       document.getElementById('generate-verse-btn').onclick = () => {
+        playSound('verse');
         const randomIndex = Math.floor(Math.random() * dailyVerses.length);
         const verse = dailyVerses[randomIndex];
         
@@ -694,7 +880,10 @@
             <p class="story-text text-gray-700 text-center text-sm mb-2">${story.text.slice(0, 80)}...</p>
             <button class="mt-auto px-3 py-1 bg-blue-400 text-white rounded-full font-bold shadow hover:bg-blue-500 transition">Read Story</button>
           `;
-          div.onclick = () => showStoryDetail(story);
+          div.onclick = () => {
+            playSound('story');
+            showStoryDetail(story);
+          };
           storiesList.appendChild(div);
         });
       }
@@ -703,6 +892,7 @@
         storiesList.classList.add('hidden');
         storyDetail.innerHTML = `<button class="mb-2 text-blue-500 underline" id="back-to-stories">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${story.title}</h3><div class="text-6xl text-center mb-4">${story.image}</div><p>${story.text}</p>${story.reference ? `<div class='mt-4'><span class='font-semibold'>Reference:</span> <a href="#" class="text-blue-600 underline" id="story-ref-link">${story.reference}</a></div>` : ''}`;
         document.getElementById('back-to-stories').onclick = () => {
+          playSound('close');
           storyDetail.classList.add('hidden');
           storiesList.classList.remove('hidden');
         };
@@ -769,6 +959,7 @@
 
       // Generate image functionality
       generateImageBtn.onclick = async () => {
+        playSound('button');
         const selectedStory = storySelector.value;
         if (!selectedStory) {
           alert('Please select a story first!');
@@ -863,6 +1054,7 @@
           generatedImageContainer.classList.remove('hidden');
           
           // Add celebration
+          playSound('win');
           launchConfetti('generated-image-container');
           
         } catch (error) {
@@ -881,6 +1073,7 @@
 
       // Download image functionality
       document.getElementById('download-image').onclick = () => {
+        playSound('button');
         const link = document.createElement('a');
         link.download = `bible-story-${storySelector.value.replace(/\s+/g, '-').toLowerCase()}.jpg`;
         link.href = generatedImage.src;
@@ -889,6 +1082,7 @@
 
       // Share image functionality
       document.getElementById('share-image').onclick = () => {
+        playSound('button');
         if (navigator.share) {
           navigator.share({
             title: `Bible Story: ${storySelector.value}`,
@@ -959,7 +1153,10 @@
           const div = document.createElement('div');
           div.className = 'bg-white rounded shadow p-4 flex items-center gap-4 cursor-pointer hover:bg-green-100';
           div.innerHTML = `<div><h3 class="text-xl font-bold">${qz.title}</h3></div>`;
-          div.onclick = () => showQuizDetail(qz);
+          div.onclick = () => {
+            playSound('open');
+            showQuizDetail(qz);
+          };
           quizzesList.appendChild(div);
         });
       }
@@ -971,12 +1168,18 @@
           const q = qz.questions[qIndex];
           quizDetail.innerHTML = `<button class="mb-2 text-green-500 underline" id="back-to-quizzes">&larr; Back</button><h3 class="text-xl font-bold mb-2">${qz.title}</h3><p class="mb-4">${q.q}</p>` + q.a.map((a, i) => `<button class="block w-full mb-2 p-2 border rounded bg-green-200 hover:bg-green-300" data-ans="${i}">${a}</button>`).join('');
           document.getElementById('back-to-quizzes').onclick = () => {
+            playSound('close');
             quizDetail.classList.add('hidden');
             quizzesList.classList.remove('hidden');
           };
           Array.from(quizDetail.querySelectorAll('button[data-ans]')).forEach(btn => {
             btn.onclick = () => {
-              if (parseInt(btn.dataset.ans) === q.correct) score++;
+              if (parseInt(btn.dataset.ans) === q.correct) {
+                playSound('correct');
+                score++;
+              } else {
+                playSound('incorrect');
+              }
               qIndex++;
               if (qIndex < qz.questions.length) renderQuestion();
               else showResult();
@@ -986,6 +1189,7 @@
         function showResult() {
           quizDetail.innerHTML = `<h3 class="text-xl font-bold mb-2">Quiz Complete!</h3><p>Your score: ${score} / ${qz.questions.length}</p><button class="mt-4 px-4 py-2 bg-green-500 text-white rounded" id="quiz-back-btn">Back to Quizzes</button>`;
           document.getElementById('quiz-back-btn').onclick = () => {
+            playSound('close');
             quizDetail.classList.add('hidden');
             quizzesList.classList.remove('hidden');
           };
@@ -1003,7 +1207,10 @@
           const div = document.createElement('div');
           div.className = 'bg-white rounded shadow p-4 flex items-center gap-4 cursor-pointer hover:bg-yellow-100';
           div.innerHTML = `<div><h3 class="text-xl font-bold">${game.title}</h3><p>${game.description}</p></div>`;
-          div.onclick = () => showGameDetail(game);
+          div.onclick = () => {
+            playSound('game');
+            showGameDetail(game);
+          };
           gamesList.appendChild(div);
         });
       }
@@ -1019,6 +1226,7 @@
             gameDetail.innerHTML = `<div style='position:relative;'><button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${game.title}</h3><div class="grid grid-cols-4 gap-2 mb-4">${shuffled.map((s, i) => `
               <button class="w-16 h-16 text-3xl bg-yellow-100 rounded shadow flex items-center justify-center ${matched.includes(i) || flipped.includes(i) ? '' : 'bg-yellow-300'}"" data-idx="${i}" ${matched.includes(i) ? 'disabled' : ''}>${matched.includes(i) || flipped.includes(i) ? s : '?'}</button>`).join('')}</div><div id="manna-status" style="position:relative;"></div></div>`;
             document.getElementById('back-to-games').onclick = () => {
+              playSound('close');
               gameDetail.classList.add('hidden');
               gamesList.classList.remove('hidden');
             };
@@ -1026,13 +1234,16 @@
               btn.onclick = () => {
                 const idx = parseInt(btn.dataset.idx);
                 if (flipped.length < 2 && !flipped.includes(idx) && !matched.includes(idx)) {
+                  playSound('click');
                   flipped.push(idx);
                   renderBoard();
                   if (flipped.length === 2) {
                     setTimeout(() => {
                       if (shuffled[flipped[0]] === shuffled[flipped[1]]) {
+                        playSound('match');
                         matched.push(...flipped);
                         if (matched.length === shuffled.length) {
+                          playSound('win');
                           document.getElementById('manna-status').innerHTML = '<div class="text-green-600 font-bold flex flex-col items-center">You matched all pairs! 🎉<span style="font-size:2.5rem; animation: bounce 1s infinite alternate;">🎊✨🎊</span></div>';
                           launchConfetti('manna-status');
                         }
