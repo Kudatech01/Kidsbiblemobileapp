@@ -1,0 +1,31 @@
+{
+  "name": "little-disciples-bible-app",
+  "version": "1.0.0",
+  "description": "A beautiful, interactive Bible app designed specifically for children",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -o",
+    "dev": "http-server -p 8000 -o -c-1",
+    "build": "echo 'No build step required - static HTML app'",
+    "deploy": "echo 'Deploy to your preferred hosting service'"
+  },
+  "keywords": [
+    "bible",
+    "kids",
+    "education",
+    "christian",
+    "games",
+    "stories",
+    "interactive"
+  ],
+  "author": "Gateway Analytics",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/little-disciples-bible-app.git"
+  },
+  "homepage": "https://yourusername.github.io/little-disciples-bible-app"
+} 

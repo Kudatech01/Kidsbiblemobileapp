@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Disciples - Bible App for Kids</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="A beautiful, interactive Bible app designed specifically for children to learn about God's Word through stories, games, quizzes, and creative activities.">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Little Disciples">
+    <meta name="msapplication-TileColor" content="#6366f1">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-72x72.png">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+  <!-- Header with Verse of the Day -->
+  <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6 shadow-lg">
+    <div class="container max-w-4xl mx-auto px-4">
+              <div class="text-center mb-6">
+          <h1 class="text-4xl md:text-5xl font-bold mb-2">🌟 Little Disciples</h1>
+          <p class="text-xl opacity-90">Learn, Play, and Grow in Faith!</p>
+        </div>
+      
+      <!-- Verse of the Day Section -->
+      <div id="verse-of-day" class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold flex items-center gap-2">
+            <span class="text-yellow-300">⭐</span>
+            Verse of the Day
+            <span class="text-yellow-300">⭐</span>
+          </h2>
+          <button id="refresh-verse" class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-200">
+            <i class="fa-solid fa-rotate text-lg"></i>
+          </button>
+        </div>
+        <div id="verse-content" class="text-center">
+          <div class="text-lg md:text-xl mb-3 font-medium leading-relaxed">
+            "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+          </div>
+          <div class="text-sm opacity-80">John 3:16</div>
+        </div>
+        <div class="mt-4 text-center">
+          <button id="share-verse" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-2 rounded-full font-semibold transition-all duration-200">
+            <i class="fa-solid fa-share mr-2"></i>Share This Verse
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs bg-white shadow-lg sticky top-0 z-10">
+    <div class="container max-w-4xl mx-auto px-4">
+      <div class="flex justify-center gap-2 py-4 overflow-x-auto">
+        <button id="nav-home" class="nav-tab px-6 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-home"></i> Home
+        </button>
+        <button id="nav-stories" class="nav-tab px-6 py-3 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-book-open"></i> Stories
+        </button>
+        <button id="nav-bible" class="nav-tab px-6 py-3 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-bible"></i> Bible
+        </button>
+        <button id="nav-quizzes" class="nav-tab px-6 py-3 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-question"></i> Quizzes
+        </button>
+        <button id="nav-games" class="nav-tab px-6 py-3 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-gamepad"></i> Games
+        </button>
+
+        <button id="nav-verses" class="nav-tab px-6 py-3 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-star"></i> Verses
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container max-w-4xl mx-auto p-4">
+    <!-- Home Section -->
+    <section id="section-home" class="hidden">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome to Your Bible Adventure! 🌟</h2>
+        <p class="text-lg text-gray-600 mb-6">Discover amazing stories, play fun games, and learn about God's love!</p>
+      </div>
+
+      <!-- Quick Access Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="quick-card bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="showSection('stories')">
+          <div class="text-4xl mb-4">📚</div>
+          <h3 class="text-xl font-bold text-blue-800 mb-2">Bible Stories</h3>
+          <p class="text-blue-700">Read amazing stories from the Bible with beautiful illustrations!</p>
+        </div>
+        
+        <div class="quick-card bg-gradient-to-br from-green-100 to-green-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="showSection('games')">
+          <div class="text-4xl mb-4">🎮</div>
+          <h3 class="text-xl font-bold text-green-800 mb-2">Fun Games</h3>
+          <p class="text-green-700">Play exciting games and learn while having fun!</p>
+        </div>
+        
+        <div class="quick-card bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="showSection('quizzes')">
+          <div class="text-4xl mb-4">🧠</div>
+          <h3 class="text-xl font-bold text-purple-800 mb-2">Bible Quizzes</h3>
+          <p class="text-purple-700">Test your knowledge with fun Bible trivia questions!</p>
+        </div>
+        
+        <div class="quick-card bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="showSection('bible')">
+          <div class="text-4xl mb-4">📖</div>
+          <h3 class="text-xl font-bold text-yellow-800 mb-2">Read Bible</h3>
+          <p class="text-yellow-700">Read any book and chapter from the Bible!</p>
+        </div>
+        
+
+        
+        <div class="quick-card bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="showSection('verses')">
+          <div class="text-4xl mb-4">✨</div>
+          <h3 class="text-xl font-bold text-orange-800 mb-2">Random Verse</h3>
+          <p class="text-orange-700">Get a new inspiring Bible verse!</p>
+        </div>
+      </div>
+
+      <!-- Daily Challenge -->
+      <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-6 text-white text-center">
+        <h3 class="text-2xl font-bold mb-2">🎯 Daily Challenge</h3>
+        <p class="text-lg mb-4">Complete today's Bible activity and earn a star!</p>
+        <button id="daily-challenge" class="bg-white text-purple-600 px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-all duration-200">
+          Start Challenge
+        </button>
+      </div>
+    </section>
+    <section id="section-stories">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">Bible Stories</h2>
+        <button id="show-image-generator" class="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+          <i class="fa-solid fa-magic mr-2"></i>AI Image Generator
+        </button>
+      </div>
+      <div id="stories-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+      <div id="story-detail" class="hidden"></div>
+      <div id="image-generator" class="hidden">
+        <button id="back-to-stories" class="mb-4 text-purple-500 underline hover:text-purple-700 transition-colors duration-200">
+          <i class="fa-solid fa-arrow-left mr-2"></i>Back to Stories
+        </button>
+        <div class="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl p-6 mb-6">
+          <h3 class="text-xl font-bold mb-4">🎨 AI Story Image Generator</h3>
+          <p class="text-gray-700 mb-4">Generate beautiful images for your favorite Bible stories using AI!</p>
+          <div class="flex flex-wrap gap-4 mb-4">
+            <select id="story-selector" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+              <option value="">Select a story...</option>
+            </select>
+            <button id="generate-image-btn" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              <i class="fa-solid fa-magic mr-2"></i>Generate Image
+            </button>
+          </div>
+          <div id="generation-status" class="hidden text-center py-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto mb-2"></div>
+            <p class="text-gray-600">Creating your magical image...</p>
+          </div>
+          <div id="generated-image-container" class="hidden text-center">
+            <img id="generated-image" class="max-w-full h-auto rounded-lg shadow-lg mx-auto mb-4" alt="Generated story image">
+            <div class="flex justify-center gap-4">
+              <button id="download-image" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+                <i class="fa-solid fa-download mr-2"></i>Download
+              </button>
+              <button id="share-image" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+                <i class="fa-solid fa-share mr-2"></i>Share
+              </button>
+              <button id="generate-another" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+                <i class="fa-solid fa-refresh mr-2"></i>Generate Another
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="section-bible" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Read the Bible</h2>
+      <div class="bible-controls flex gap-2 mb-4">
+        <select id="bible-book-select" class="p-2 border rounded"></select>
+        <select id="bible-chapter-select" class="p-2 border rounded"></select>
+      </div>
+      <div id="bible-text-display" class="bible-text bg-white rounded shadow p-4 min-h-[100px]"></div>
+    </section>
+    <section id="section-quizzes" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Quizzes</h2>
+      <div id="quizzes-list" class="grid grid-cols-1 gap-4"></div>
+      <div id="quiz-detail" class="hidden"></div>
+    </section>
+    <section id="section-games" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Games</h2>
+      <div id="games-list" class="grid grid-cols-1 gap-4"></div>
+      <div id="game-detail" class="hidden"></div>
+    </section>
+
+    
+    <!-- Verses Section -->
+    <section id="section-verses" class="hidden">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">🌟 Bible Verses</h2>
+        <p class="text-lg text-gray-600 mb-6">Discover inspiring verses from God's Word!</p>
+      </div>
+      
+      <!-- Verse Generator -->
+      <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-8 mb-8 text-center">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">✨ Random Verse Generator</h3>
+        <p class="text-gray-600 mb-6">Click the button below to get a new inspiring Bible verse!</p>
+        <button id="generate-verse-btn" class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          <i class="fa-solid fa-star mr-2"></i>Generate New Verse
+        </button>
+      </div>
+      
+      <!-- Current Verse Display -->
+      <div id="verse-display" class="bg-white rounded-2xl p-8 shadow-lg mb-8">
+        <div class="text-center">
+          <div class="text-4xl mb-4">📖</div>
+          <div id="verse-text" class="text-xl md:text-2xl font-medium text-gray-800 mb-4 leading-relaxed">
+            "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+          </div>
+          <div id="verse-reference" class="text-lg text-blue-600 font-semibold mb-4">John 3:16</div>
+          <div class="flex justify-center gap-4">
+            <button id="copy-verse" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-200">
+              <i class="fa-solid fa-copy mr-2"></i>Copy Verse
+            </button>
+            <button id="share-verse-page" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-200">
+              <i class="fa-solid fa-share mr-2"></i>Share Verse
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Favorite Verses -->
+      <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">💖 Favorite Verses for Kids</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="text-2xl mb-3">🌟</div>
+            <div class="text-lg font-medium text-gray-800 mb-2">"I can do all things through Christ who strengthens me."</div>
+            <div class="text-blue-600 font-semibold">Philippians 4:13</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="text-2xl mb-3">🛡️</div>
+            <div class="text-lg font-medium text-gray-800 mb-2">"Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go."</div>
+            <div class="text-blue-600 font-semibold">Joshua 1:9</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="text-2xl mb-3">❤️</div>
+            <div class="text-lg font-medium text-gray-800 mb-2">"Love is patient, love is kind. It does not envy, it does not boast, it is not proud."</div>
+            <div class="text-blue-600 font-semibold">1 Corinthians 13:4</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="text-2xl mb-3">🙏</div>
+            <div class="text-lg font-medium text-gray-800 mb-2">"Trust in the Lord with all your heart and lean not on your own understanding."</div>
+            <div class="text-blue-600 font-semibold">Proverbs 3:5</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered successfully:', registration.scope);
+            
+            // Check for updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showUpdateNotification();
+                }
+              });
+            });
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
+
+    // PWA Update Notification
+    function showUpdateNotification() {
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-blue-500 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm';
+      notification.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="text-2xl">🔄</div>
+          <div>
+            <div class="font-bold">App Update Available</div>
+            <div class="text-sm">A new version is ready to install</div>
+          </div>
+          <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-gray-200">✕</button>
+        </div>
+        <div class="mt-3 flex gap-2">
+          <button onclick="updateApp()" class="bg-white text-blue-500 px-3 py-1 rounded text-sm font-bold">Update Now</button>
+          <button onclick="this.parentElement.parentElement.remove()" class="text-white text-sm">Later</button>
+        </div>
+      `;
+      document.body.appendChild(notification);
+    }
+
+    // PWA Update Function
+    function updateApp() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        });
+      }
+      window.location.reload();
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallButton();
+    });
+
+    function showInstallButton() {
+      const installBtn = document.createElement('button');
+      installBtn.id = 'install-btn';
+      installBtn.className = 'fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg z-50 text-2xl hover:bg-green-600 transition-colors';
+      installBtn.innerHTML = '📱';
+      installBtn.title = 'Install App';
+      installBtn.onclick = installApp;
+      document.body.appendChild(installBtn);
+    }
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+          const installBtn = document.getElementById('install-btn');
+          if (installBtn) installBtn.remove();
+        });
+      }
+    }
+
+    // PWA Online/Offline Status
+    window.addEventListener('online', () => {
+      showStatusMessage('You are back online! 🌐', 'green');
+    });
+
+    window.addEventListener('offline', () => {
+      showStatusMessage('You are offline. Some features may be limited. 📱', 'orange');
+    });
+
+    function showStatusMessage(message, color) {
+      const statusDiv = document.createElement('div');
+      statusDiv.className = `fixed top-4 left-4 bg-${color}-500 text-white p-3 rounded-lg shadow-lg z-50 max-w-sm`;
+      statusDiv.innerHTML = `
+        <div class="flex items-center gap-2">
+          <div>${message}</div>
+          <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-gray-200">✕</button>
+        </div>
+      `;
+      document.body.appendChild(statusDiv);
+      setTimeout(() => {
+        if (statusDiv.parentElement) {
+          statusDiv.remove();
+        }
+      }, 3000);
+    }
+
+    // Fun confetti effect for game wins
+    function launchConfetti(targetId) {
+      const container = document.getElementById(targetId);
+      if (!container) return;
+      const confetti = document.createElement('div');
+      confetti.style.position = 'absolute';
+      confetti.style.left = '0';
+      confetti.style.top = '0';
+      confetti.style.width = '100%';
+      confetti.style.height = '100%';
+      confetti.style.pointerEvents = 'none';
+      confetti.style.zIndex = '10';
+      confetti.innerHTML = Array.from({length: 30}).map(() => {
+        const colors = ['#FFD700','#FF69B4','#87CEEB','#32CD32','#FF6347','#FFF'];
+        const color = colors[Math.floor(Math.random()*colors.length)];
+        const left = Math.random()*100;
+        const delay = Math.random();
+        const duration = 1.5 + Math.random();
+        const size = 12 + Math.random()*12;
+        return `<svg style=\"position:absolute;left:${left}%;top:-20px;animation:confetti-fall ${duration}s ${delay}s forwards;\" width=\"${size}\" height=\"${size}\" viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"8\" fill=\"${color}\"/></svg>`;
+      }).join('');
+      container.appendChild(confetti);
+      setTimeout(() => { confetti.remove(); }, 2500);
+    }
+    // App data for stories, quizzes, games, Bible books, and coloring images
+    const AppData = {
+      stories: [
+        { id: 'creation', title: 'The Story of Creation', icon: 'fa-earth-americas', image: '🌍', text: 'In the very beginning, there was nothing but darkness. Then, God said, "Let there be light!" and suddenly, the world was bright. God made the sky, the land, and the seas. He filled the earth with tall trees, colorful flowers, and all kinds of animals—lions, butterflies, dolphins, and more! On the sixth day, God created Adam and Eve, the first people, and gave them a beautiful garden to live in. God looked at everything He had made and smiled. "It is very good!" He said. On the seventh day, God rested. Can you imagine what it would be like to see the world being made? What is your favorite thing that God created?', reference: 'Genesis 1' },
+        { id: 'noah', title: "Noah's Ark", icon: 'fa-ship', image: '🚢', text: 'The world had become a wicked place, so God told a good man named Noah to build a giant ark. Noah, his family, and two of every kind of animal went inside. Then, it rained for forty days and forty nights, covering the whole earth with water. When the flood was over, God put a rainbow in the sky as a promise to never flood the entire earth again.', reference: 'Genesis 6-9' },
+        { id: 'david', title: 'David and Goliath', icon: 'fa-shield-halved', image: '🛡️', text: 'Goliath was a giant warrior who challenged anyone from the Israelite army to fight him, but everyone was afraid. A young shepherd boy named David trusted in God. With only a sling and five smooth stones, David faced the giant. He slung a stone that hit Goliath in the forehead, and the giant fell down! David showed that with God\'s help, you can face any giant.', reference: '1 Samuel 17' },
+        { id: 'samaritan', title: 'The Good Samaritan', icon: 'fa-hand-holding-heart', image: '❤️', text: "A man was traveling when robbers attacked him and left him hurt on the side of the road. A priest and a temple worker both passed by without helping. But then, a Samaritan, someone who was usually disliked, stopped to help. He bandaged the man's wounds, took him to an inn, and paid for his care. Jesus told this story to teach us to love and help everyone, no matter who they are.", reference: 'Luke 10:29-37' },
+        { id: 'jonah', title: 'Jonah and the Big Fish', icon: 'fa-fish', image: '🐋', text: "God asked Jonah to go to the city of Nineveh, but Jonah didn't want to. He ran away on a ship instead! God sent a huge storm, and the sailors threw Jonah into the sea to calm it. A giant fish swallowed Jonah, and he lived inside its belly for three days. Jonah prayed to God, and the fish spit him out onto dry land. This time, Jonah obeyed and went to Nineveh.", reference: 'Jonah 1:1-17' },
+        { id: 'daniel', title: "Daniel in the Lion's Den", icon: 'fa-paw', image: '🦁', text: "Daniel loved God and prayed to Him every day. Some jealous men tricked the king into making a law that no one could pray to anyone but the king. When Daniel prayed to God anyway, he was thrown into a den of hungry lions. But God sent an angel to shut the lions' mouths, and Daniel was kept safe all night. The king was so happy he praised God.", reference: 'Daniel 6:1-28' },
+        { id: 'moses', title: 'Moses and the Burning Bush', icon: 'fa-fire', image: '🔥', text: 'Moses was tending sheep when he saw a bush on fire, but it was not burning up! God spoke to Moses from the bush and told him to lead the Israelites out of Egypt. Moses trusted God and became a great leader.', reference: 'Exodus 3:1-10' },
+        { id: 'joseph', title: 'Joseph and His Colorful Coat', icon: 'fa-shirt', image: '👕', text: 'Joseph was given a beautiful coat by his father, but his brothers were jealous and sold him into slavery. God was with Joseph, and he became a ruler in Egypt, saving many people from hunger.', reference: 'Genesis 37:1-40' },
+        { id: 'jesus-birth', title: 'The Birth of Jesus', icon: 'fa-star', image: '⭐', text: 'Mary and Joseph traveled to Bethlehem, where Jesus was born in a stable. Angels announced His birth to shepherds, and wise men followed a star to visit Him. Jesus is God\'s special gift to the world.', reference: 'Luke 2:1-20' },
+        { id: 'abraham-promise', title: 'God\'s Promise to Abraham', icon: 'fa-star-of-david', image: '⭐', text: 'God promised Abraham that he would have as many descendants as the stars in the sky. Even though Abraham and Sarah were very old, God kept His promise and gave them a son named Isaac.', reference: 'Genesis 15' },
+        { id: 'jacob-ladder', title: 'Jacob\'s Dream of a Ladder', icon: 'fa-stairs', image: '🪜', text: 'Jacob dreamed of a ladder reaching to heaven, with angels going up and down. God spoke to Jacob in the dream and promised to be with him wherever he went.', reference: 'Genesis 28:10-22' },
+        { id: 'moses-red-sea', title: 'Crossing the Red Sea', icon: 'fa-water', image: '🌊', text: 'When the Israelites were trapped by the Red Sea, God told Moses to stretch out his staff. God parted the waters, and the people walked through on dry ground!', reference: 'Exodus 14' },
+        { id: 'jesus-feeds-5000', title: 'Jesus Feeds 5,000', icon: 'fa-bread-slice', image: '🍞', text: 'A huge crowd came to hear Jesus, but they were hungry. Jesus took five loaves and two fish, gave thanks, and fed everyone—there were even leftovers!', reference: 'John 6:1-14' },
+        { id: 'paul-shipwreck', title: 'Paul\'s Shipwreck', icon: 'fa-ship', image: '🚢', text: 'Paul was on a ship during a big storm. The ship broke apart, but God kept everyone safe. Paul and the others made it safely to shore.', reference: 'Acts 27' }
+      ],
+      quizzes: [
+        { id: 'creation', storyId: 'creation', title: 'Creation Quiz', questions: [
+          { q: 'What did God create on the first day?', a: ['Light', 'Animals', 'People'], correct: 0 },
+          { q: 'Who were the first two people God created?', a: ['Noah and his wife', 'Adam and Eve', 'David and Goliath'], correct: 1 },
+          { q: 'What did God do on the seventh day?', a: ['He made more stars', 'He rested', 'He planted a garden'], correct: 1 }
+        ]},
+        { id: 'noah', storyId: 'noah', title: "Noah's Ark Quiz", questions: [
+          { q: 'Why did God ask Noah to build an ark?', a: ['For a fun boat trip', 'The world had become a wicked place', 'To discover new lands'], correct: 1 },
+          { q: 'How many of each animal did Noah take?', a: ['One', 'Two', 'Three'], correct: 1 },
+          { q: 'What was God\'s promise after the flood?', a: ['It would never rain again', 'He would never flood the whole earth again', 'People would live on boats'], correct: 1 }
+        ]},
+        { id: 'david', storyId: 'david', title: 'David and Goliath Quiz', questions: [
+          { q: 'What was David\'s job?', a: ['A soldier', 'A king', 'A shepherd'], correct: 2 },
+          { q: 'What did David use to defeat Goliath?', a: ['A sword and shield', 'A sling and a stone', 'His bare hands'], correct: 1 },
+          { q: 'What does this story teach us?', a: ['Giants are easy to beat', 'With God\'s help, we can face any challenge', 'You should always fight'], correct: 1 }
+        ]},
+        { id: 'samaritan', storyId: 'samaritan', title: 'Good Samaritan Quiz', questions: [
+          { q: 'Who was hurt on the side of the road?', a: ['A Samaritan', 'A traveler', 'A priest'], correct: 1 },
+          { q: 'Who stopped to help the hurt man?', a: ['The priest', 'The temple worker', 'The Samaritan'], correct: 2 },
+          { q: 'What does this story teach us?', a: ['To hurry on our journey', 'To love and help everyone', 'To only help our friends'], correct: 1 }
+        ]}
+        // ... (Add other quizzes, games, bibleBookData, coloringImages as needed)
+      ],
+      games: [
+        { id: 'manna-match', title: 'Manna Match', icon: 'fa-brain', description: 'Match the pairs of Bible symbols.' },
+        { id: 'bible-trivia', title: 'Bible Trivia', icon: 'fa-question-circle', description: 'Test your knowledge with fun Bible trivia questions.' },
+        { id: 'ark-builder', title: 'Ark Builder', icon: 'fa-hammer', description: 'Help Noah build the ark by solving puzzles.' },
+        { id: 'maze-run', title: 'Maze Run: Egypt to Canaan', icon: 'fa-map', description: 'Guide the Israelites from Egypt to Canaan through a fun maze! (Coming soon)' }
+      ],
+      bibleBookData: {
+        "Genesis": 50, "Exodus": 40, "Leviticus": 27, "Numbers": 36, "Deuteronomy": 34, "Joshua": 24, "Judges": 21, "Ruth": 4, "1 Samuel": 31, "2 Samuel": 24, "1 Kings": 22, "2 Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10, "Nehemiah": 13, "Esther": 10, "Job": 42, "Psalms": 150, "Proverbs": 31, "Ecclesiastes": 12, "Song of Solomon": 8, "Isaiah": 66, "Jeremiah": 52, "Lamentations": 5, "Ezekiel": 48, "Daniel": 12, "Hosea": 14, "Joel": 3, "Amos": 9, "Obadiah": 1, "Jonah": 4, "Micah": 7, "Nahum": 3, "Habakkuk": 3, "Zephaniah": 3, "Haggai": 2, "Zechariah": 14, "Malachi": 4, "Matthew": 28, "Mark": 16, "Luke": 24, "John": 21, "Acts": 28, "Romans": 16, "1 Corinthians": 16, "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6, "Philippians": 4, "Colossians": 4, "1 Thessalonians": 5, "2 Thessalonians": 3, "1 Timothy": 6, "2 Timothy": 4, "Titus": 3, "Philemon": 1, "Hebrews": 13, "James": 5, "1 Peter": 5, "2 Peter": 3, "1 John": 5, "2 John": 1, "3 John": 1, "Jude": 1, "Revelation": 22
+      },
+      coloringImages: {
+        noah: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj48cGF0aCBkPSJNMjAgNjBBODAgODAgMCAwIDEgMTAwIDYwIDgwIDgwIDAgMCAxIDIwIDYwIiBmaWxsPSIjNjdjNWYwIi8+PGNpcmNsZSBjeD0iMzAiIGN5PSI1OCIgcj0iMiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNOTUgMTA1QTUwIDUwIDAgMCAxIDk1IDU1IEMxMDUgNTUgMTEwIDYwIDExMCA2NVoiIGZpbGw9IiM2N2M1ZjAiLz48cmVjdCB4PSI1MCIgeT0iNTgiIHdpZHRoPSIxMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==`,
+        creation: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSIyNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2klLXdpZHRoPSIyIi8+PHBhdGggZD0iTTgwIDMwIEEyMCAyMCAwIDEgMSA4MCA2NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2klLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUwIDk1IGw1IDE1IGwtMTMgLTggaCAxNiBsIC0xMyA4IHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMS41Ii8+PHBhdGggZD0iTTMwIDgwbDUgMTUgbC0xMyAtOCBoIDE2IGwgLTEzIDggeiIgZmlsbD0ibm9uZSIgc3Ryb2klPSJibGFjayIgc3Ryb2klLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNzAgOTBsNSAxNSBsIC0xMyAtOCBoIDE2IGwgLTEzIDggeiIgZmlsbD0ibm9uZSIgc3Ryb2klPSJibGFjayIgc3Ryb2klLXdpZHRoPSIxLjUiLz48L3N2Zz4=`
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Verse of the Day functionality
+      const dailyVerses = [
+        { text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", reference: "John 3:16" },
+        { text: "I can do all things through Christ who strengthens me.", reference: "Philippians 4:13" },
+        { text: "Trust in the Lord with all your heart and lean not on your own understanding.", reference: "Proverbs 3:5" },
+        { text: "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", reference: "Joshua 1:9" },
+        { text: "Love is patient, love is kind. It does not envy, it does not boast, it is not proud.", reference: "1 Corinthians 13:4" },
+        { text: "The Lord is my shepherd, I shall not want.", reference: "Psalm 23:1" },
+        { text: "Give thanks to the Lord, for he is good; his love endures forever.", reference: "Psalm 107:1" },
+        { text: "Let the little children come to me, and do not hinder them, for the kingdom of God belongs to such as these.", reference: "Mark 10:14" },
+        { text: "Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.", reference: "Ephesians 4:32" },
+        { text: "This is the day that the Lord has made; let us rejoice and be glad in it.", reference: "Psalm 118:24" },
+        { text: "Do not be anxious about anything, but present your requests to God with thanksgiving.", reference: "Philippians 4:6" },
+        { text: "The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness.", reference: "Galatians 5:22" },
+        { text: "Train up a child in the way he should go; even when he is old he will not depart from it.", reference: "Proverbs 22:6" },
+        { text: "Come to me, all you who are weary and burdened, and I will give you rest.", reference: "Matthew 11:28" },
+        { text: "In all things God works for the good of those who love him.", reference: "Romans 8:28" }
+      ];
+
+      let currentVerseIndex = 0;
+
+      function generateRandomVerse() {
+        const randomIndex = Math.floor(Math.random() * dailyVerses.length);
+        const verse = dailyVerses[randomIndex];
+        
+        document.querySelector('#verse-content .text-lg').textContent = `"${verse.text}"`;
+        document.querySelector('#verse-content .text-sm').textContent = verse.reference;
+        
+        // Add animation
+        const verseContent = document.getElementById('verse-content');
+        verseContent.style.opacity = '0';
+        setTimeout(() => {
+          verseContent.style.opacity = '1';
+        }, 200);
+      }
+
+      // Set initial verse based on date (for daily consistency)
+      function setDailyVerse() {
+        const today = new Date();
+        const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+        currentVerseIndex = dayOfYear % dailyVerses.length;
+        const verse = dailyVerses[currentVerseIndex];
+        
+        document.querySelector('#verse-content .text-lg').textContent = `"${verse.text}"`;
+        document.querySelector('#verse-content .text-sm').textContent = verse.reference;
+      }
+
+      // Share verse functionality
+      document.getElementById('share-verse').onclick = () => {
+        const verseText = document.querySelector('#verse-content .text-lg').textContent;
+        const verseRef = document.querySelector('#verse-content .text-sm').textContent;
+        const shareText = `${verseText} - ${verseRef}`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Verse of the Day',
+            text: shareText,
+            url: window.location.href
+          });
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(shareText).then(() => {
+            alert('Verse copied to clipboard!');
+          });
+        }
+      };
+
+      // Refresh verse button
+      document.getElementById('refresh-verse').onclick = generateRandomVerse;
+      
+      // Verses page functionality
+      document.getElementById('generate-verse-btn').onclick = () => {
+        const randomIndex = Math.floor(Math.random() * dailyVerses.length);
+        const verse = dailyVerses[randomIndex];
+        
+        // Add loading animation
+        const verseText = document.getElementById('verse-text');
+        const verseRef = document.getElementById('verse-reference');
+        
+        verseText.style.opacity = '0.5';
+        verseRef.style.opacity = '0.5';
+        
+        setTimeout(() => {
+          verseText.textContent = `"${verse.text}"`;
+          verseRef.textContent = verse.reference;
+          verseText.style.opacity = '1';
+          verseRef.style.opacity = '1';
+          
+          // Add celebration
+          launchConfetti('verse-display');
+        }, 300);
+      };
+      
+      // Copy verse functionality
+      document.getElementById('copy-verse').onclick = () => {
+        const verseText = document.getElementById('verse-text').textContent;
+        const verseRef = document.getElementById('verse-reference').textContent;
+        const fullText = `${verseText} - ${verseRef}`;
+        
+        navigator.clipboard.writeText(fullText).then(() => {
+          const btn = document.getElementById('copy-verse');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>Copied!';
+          btn.classList.add('bg-green-500');
+          
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('bg-green-500');
+          }, 2000);
+        });
+      };
+      
+      // Share verse functionality
+      document.getElementById('share-verse-page').onclick = () => {
+        const verseText = document.getElementById('verse-text').textContent;
+        const verseRef = document.getElementById('verse-reference').textContent;
+        const shareText = `${verseText} - ${verseRef}`;
+        
+        if (navigator.share) {
+          navigator.share({
+            title: 'Bible Verse',
+            text: shareText,
+            url: window.location.href
+          });
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(shareText).then(() => {
+            alert('Verse copied to clipboard!');
+          });
+        }
+      };
+
+      // Daily challenge functionality
+      document.getElementById('daily-challenge').onclick = () => {
+        const challenges = [
+          'Read a Bible story',
+          'Complete a quiz',
+          'Play a game',
+          'Learn a new verse',
+          'Color a picture'
+        ];
+        const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+        
+        document.getElementById('daily-challenge').innerHTML = `
+          <div class="text-center">
+            <div class="text-2xl mb-2">🎯</div>
+            <div class="font-bold">${randomChallenge}</div>
+          </div>
+        `;
+        
+        // Add celebration
+        launchConfetti('daily-challenge');
+      };
+
+      // Navigation logic
+      const sections = {
+        home: document.getElementById('section-home'),
+        stories: document.getElementById('section-stories'),
+        bible: document.getElementById('section-bible'),
+        quizzes: document.getElementById('section-quizzes'),
+        games: document.getElementById('section-games'),
+        verses: document.getElementById('section-verses')
+      };
+
+      function showSection(name) {
+        // Update tab styles
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+          tab.classList.remove('bg-blue-500', 'text-white');
+          tab.classList.add('bg-gray-200', 'text-gray-700');
+        });
+        
+        const activeTab = document.getElementById('nav-' + name);
+        if (activeTab) {
+          activeTab.classList.remove('bg-gray-200', 'text-gray-700');
+          activeTab.classList.add('bg-blue-500', 'text-white');
+        }
+
+        // Show/hide sections
+        Object.keys(sections).forEach(key => {
+          sections[key].classList.toggle('hidden', key !== name);
+        });
+      }
+
+      // Navigation event listeners
+      document.getElementById('nav-home').onclick = () => showSection('home');
+      document.getElementById('nav-stories').onclick = () => showSection('stories');
+      document.getElementById('nav-bible').onclick = () => showSection('bible');
+      document.getElementById('nav-quizzes').onclick = () => showSection('quizzes');
+      document.getElementById('nav-games').onclick = () => showSection('games');
+      document.getElementById('nav-verses').onclick = () => showSection('verses');
+
+      // Initialize
+      setDailyVerse();
+      showSection('home');
+
+      // --- STORIES ---
+      const storiesList = document.getElementById('stories-list');
+      const storyDetail = document.getElementById('story-detail');
+      function renderStories() {
+        storiesList.innerHTML = '';
+        storiesList.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6';
+        AppData.stories.forEach(story => {
+          const div = document.createElement('div');
+          div.className = 'story-card relative bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 rounded-2xl shadow-lg p-4 flex flex-col items-center gap-2 cursor-pointer transition-transform duration-200 hover:scale-105 hover:shadow-2xl';
+          div.innerHTML = `
+            <div class="absolute top-2 right-2 text-xs bg-yellow-300 text-yellow-900 px-2 py-1 rounded-full shadow font-bold z-10">${story.reference || ''}</div>
+            <div class="story-image w-20 h-20 rounded-full bg-white flex items-center justify-center shadow mb-2 overflow-hidden text-4xl" style="border: 3px solid #fbbf24;">
+              ${story.image}
+            </div>
+            <h3 class="story-title text-lg font-extrabold text-blue-700 text-center mb-1">${story.title}</h3>
+            <p class="story-text text-gray-700 text-center text-sm mb-2">${story.text.slice(0, 80)}...</p>
+            <button class="mt-auto px-3 py-1 bg-blue-400 text-white rounded-full font-bold shadow hover:bg-blue-500 transition">Read Story</button>
+          `;
+          div.onclick = () => showStoryDetail(story);
+          storiesList.appendChild(div);
+        });
+      }
+      function showStoryDetail(story) {
+        storyDetail.classList.remove('hidden');
+        storiesList.classList.add('hidden');
+        storyDetail.innerHTML = `<button class="mb-2 text-blue-500 underline" id="back-to-stories">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${story.title}</h3><div class="text-6xl text-center mb-4">${story.image}</div><p>${story.text}</p>${story.reference ? `<div class='mt-4'><span class='font-semibold'>Reference:</span> <a href="#" class="text-blue-600 underline" id="story-ref-link">${story.reference}</a></div>` : ''}`;
+        document.getElementById('back-to-stories').onclick = () => {
+          storyDetail.classList.add('hidden');
+          storiesList.classList.remove('hidden');
+        };
+        if (story.reference) {
+          document.getElementById('story-ref-link').onclick = (e) => {
+            e.preventDefault();
+            showSection('bible');
+            // Parse book and chapter
+            const [book, chapter] = story.reference.split(/\s+/);
+            bookSelect.value = book;
+            const event = new Event('change');
+            bookSelect.dispatchEvent(event);
+            setTimeout(() => {
+              chapterSelect.value = chapter;
+              chapterSelect.dispatchEvent(new Event('change'));
+            }, 100);
+          };
+        }
+      }
+      renderStories();
+
+      // --- IMAGE GENERATOR ---
+      const imageGenerator = document.getElementById('image-generator');
+      const storySelector = document.getElementById('story-selector');
+      const generateImageBtn = document.getElementById('generate-image-btn');
+      const generationStatus = document.getElementById('generation-status');
+      const generatedImageContainer = document.getElementById('generated-image-container');
+      const generatedImage = document.getElementById('generated-image');
+
+      // Show/hide image generator
+      document.getElementById('show-image-generator').onclick = () => {
+        const storiesList = document.getElementById('stories-list');
+        const storyDetail = document.getElementById('story-detail');
+        
+        // Show image generator
+        imageGenerator.classList.remove('hidden');
+        storiesList.classList.add('hidden');
+        storyDetail.classList.add('hidden');
+        
+        // Populate story selector
+        storySelector.innerHTML = '<option value="">Select a story...</option>';
+        AppData.stories.forEach(story => {
+          const option = document.createElement('option');
+          option.value = story.title;
+          option.textContent = story.title;
+          storySelector.appendChild(option);
+        });
+      };
+
+      // Back to stories functionality
+      document.getElementById('back-to-stories').onclick = () => {
+        const storiesList = document.getElementById('stories-list');
+        const storyDetail = document.getElementById('story-detail');
+        
+        // Hide image generator
+        imageGenerator.classList.add('hidden');
+        storiesList.classList.remove('hidden');
+        
+        // Reset image generator state
+        generationStatus.classList.add('hidden');
+        generatedImageContainer.classList.add('hidden');
+        storySelector.value = '';
+      };
+
+      // Generate image functionality
+      generateImageBtn.onclick = async () => {
+        const selectedStory = storySelector.value;
+        if (!selectedStory) {
+          alert('Please select a story first!');
+          return;
+        }
+
+        // Show loading state
+        generateImageBtn.disabled = true;
+        generationStatus.classList.remove('hidden');
+        generatedImageContainer.classList.add('hidden');
+
+        try {
+          // Find the selected story
+          const story = AppData.stories.find(s => s.title === selectedStory);
+          if (!story) throw new Error('Story not found');
+
+          // Create a child-friendly prompt
+          const prompt = `A beautiful, colorful, child-friendly illustration of the Bible story "${story.title}". ${story.text.substring(0, 200)}... Style: bright colors, simple shapes, safe for children, cartoon-like, educational, inspiring.`;
+
+          // Simulate AI image generation with a delay and placeholder
+          // In a real implementation, you would integrate with services like:
+          // - OpenAI DALL-E API
+          // - Stable Diffusion API
+          // - Midjourney API
+          // - Or use a free service like Hugging Face's diffusers
+          
+          // For demo purposes, we'll use a placeholder approach
+          await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate processing time
+          
+          // Create a themed placeholder image based on the story
+          const storyThemes = {
+            'Creation': '🌍',
+            "Noah's Ark": '🚢',
+            'David and Goliath': '🛡️',
+            'Good Samaritan': '❤️',
+            'Jonah and the Fish': '🐋',
+            "Daniel's Lions": '🦁',
+            'Moses and the Bush': '🔥',
+            "Joseph's Coat": '👕',
+            'Baby Jesus': '⭐',
+            "Abraham's Promise": '⭐',
+            "Jacob's Ladder": '🪜',
+            'Crossing the Red Sea': '🌊',
+            'Jesus Feeds 5000': '🍞',
+            "Paul's Shipwreck": '🚢'
+          };
+          
+          const theme = storyThemes[story.title] || '📖';
+          
+          // Create a canvas-based "generated" image
+          const canvas = document.createElement('canvas');
+          canvas.width = 400;
+          canvas.height = 300;
+          const ctx = canvas.getContext('2d');
+          
+          // Create a gradient background
+          const gradient = ctx.createLinearGradient(0, 0, 400, 300);
+          gradient.addColorStop(0, '#e0e7ff');
+          gradient.addColorStop(1, '#c7d2fe');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, 400, 300);
+          
+          // Add some decorative elements
+          ctx.fillStyle = '#8b5cf6';
+          ctx.font = '48px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(theme, 200, 120);
+          
+          // Add story title
+          ctx.fillStyle = '#4c1d95';
+          ctx.font = 'bold 20px Arial';
+          ctx.fillText(story.title, 200, 180);
+          
+          // Add "AI Generated" text
+          ctx.fillStyle = '#6b7280';
+          ctx.font = '14px Arial';
+          ctx.fillText('AI Generated Image', 200, 220);
+          
+          // Add some sparkles
+          ctx.fillStyle = '#fbbf24';
+          for (let i = 0; i < 5; i++) {
+            ctx.fillText('✨', 50 + i * 80, 80 + (i % 2) * 20);
+          }
+          
+          // Convert canvas to data URL
+          const imageDataUrl = canvas.toDataURL('image/png');
+          generatedImage.src = imageDataUrl;
+          generatedImage.alt = `Generated image for ${story.title}`;
+          
+          // Show the generated image
+          generationStatus.classList.add('hidden');
+          generatedImageContainer.classList.remove('hidden');
+          
+          // Add celebration
+          launchConfetti('generated-image-container');
+          
+        } catch (error) {
+          console.error('Error generating image:', error);
+          
+          // Show a placeholder image with a message
+          generatedImage.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1lcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjNmI3MjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgR2VuZXJhdGlvbiBVbmF2YWlsYWJsZTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjYwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLWVyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QbGVhc2UgdHJ5IGFnYWluIGxhdGVyPC90ZXh0Pjwvc3ZnPg==';
+          generatedImage.alt = 'Image generation unavailable';
+          
+          generationStatus.classList.add('hidden');
+          generatedImageContainer.classList.remove('hidden');
+        } finally {
+          generateImageBtn.disabled = false;
+        }
+      };
+
+      // Download image functionality
+      document.getElementById('download-image').onclick = () => {
+        const link = document.createElement('a');
+        link.download = `bible-story-${storySelector.value.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+        link.href = generatedImage.src;
+        link.click();
+      };
+
+      // Share image functionality
+      document.getElementById('share-image').onclick = () => {
+        if (navigator.share) {
+          navigator.share({
+            title: `Bible Story: ${storySelector.value}`,
+            text: `Check out this AI-generated image for the Bible story "${storySelector.value}"!`,
+            url: window.location.href
+          });
+        } else {
+          // Fallback: copy image URL to clipboard
+          navigator.clipboard.writeText(generatedImage.src).then(() => {
+            alert('Image URL copied to clipboard!');
+          });
+        }
+      };
+
+      // Generate another image
+      document.getElementById('generate-another').onclick = () => {
+        generatedImageContainer.classList.add('hidden');
+        generateImageBtn.click();
+      };
+
+      // --- BIBLE ---
+      const bookSelect = document.getElementById('bible-book-select');
+      const chapterSelect = document.getElementById('bible-chapter-select');
+      const bibleTextDisplay = document.getElementById('bible-text-display');
+      function initializeBible() {
+        const books = Object.keys(AppData.bibleBookData);
+        bookSelect.innerHTML = books.map(b => `<option value="${b}">${b}</option>`).join('');
+        function updateChapters() {
+          const selectedBook = bookSelect.value;
+          const numChapters = AppData.bibleBookData[selectedBook];
+          chapterSelect.innerHTML = '';
+          for (let i = 1; i <= numChapters; i++) {
+            chapterSelect.innerHTML += `<option value="${i}">Chapter ${i}</option>`;
+          }
+          updateText();
+        }
+        function updateText() {
+          const book = bookSelect.value;
+          const chapter = chapterSelect.value;
+          bibleTextDisplay.innerHTML = `<p class="text-center p-8">Loading...</p>`;
+          fetch(`https://bible-api.com/${book}+${chapter}?translation=bbe`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.error) {
+                bibleTextDisplay.innerHTML = `<p class="text-center p-8 text-red-500">Could not load chapter. Please try again.</p>`;
+                return;
+              }
+              const versesHtml = data.verses.map(v => `<sup>${v.verse}</sup> ${v.text}`).join(' ');
+              bibleTextDisplay.innerHTML = `<h3 class="text-2xl font-bold mb-2">${data.reference}</h3><p>${versesHtml}</p>`;
+            })
+            .catch(error => {
+              console.error('Error fetching Bible text:', error);
+              bibleTextDisplay.innerHTML = `<p class="text-center p-8 text-red-500">An error occurred. Please check your internet connection.</p>`;
+            });
+        }
+        bookSelect.addEventListener('change', updateChapters);
+        chapterSelect.addEventListener('change', updateText);
+        updateChapters();
+      }
+      initializeBible();
+
+      // --- QUIZZES ---
+      const quizzesList = document.getElementById('quizzes-list');
+      const quizDetail = document.getElementById('quiz-detail');
+      function renderQuizzes() {
+        quizzesList.innerHTML = '';
+        AppData.quizzes.forEach(qz => {
+          const div = document.createElement('div');
+          div.className = 'bg-white rounded shadow p-4 flex items-center gap-4 cursor-pointer hover:bg-green-100';
+          div.innerHTML = `<div><h3 class="text-xl font-bold">${qz.title}</h3></div>`;
+          div.onclick = () => showQuizDetail(qz);
+          quizzesList.appendChild(div);
+        });
+      }
+      function showQuizDetail(qz) {
+        quizDetail.classList.remove('hidden');
+        quizzesList.classList.add('hidden');
+        let qIndex = 0, score = 0;
+        function renderQuestion() {
+          const q = qz.questions[qIndex];
+          quizDetail.innerHTML = `<button class="mb-2 text-green-500 underline" id="back-to-quizzes">&larr; Back</button><h3 class="text-xl font-bold mb-2">${qz.title}</h3><p class="mb-4">${q.q}</p>` + q.a.map((a, i) => `<button class="block w-full mb-2 p-2 border rounded bg-green-200 hover:bg-green-300" data-ans="${i}">${a}</button>`).join('');
+          document.getElementById('back-to-quizzes').onclick = () => {
+            quizDetail.classList.add('hidden');
+            quizzesList.classList.remove('hidden');
+          };
+          Array.from(quizDetail.querySelectorAll('button[data-ans]')).forEach(btn => {
+            btn.onclick = () => {
+              if (parseInt(btn.dataset.ans) === q.correct) score++;
+              qIndex++;
+              if (qIndex < qz.questions.length) renderQuestion();
+              else showResult();
+            };
+          });
+        }
+        function showResult() {
+          quizDetail.innerHTML = `<h3 class="text-xl font-bold mb-2">Quiz Complete!</h3><p>Your score: ${score} / ${qz.questions.length}</p><button class="mt-4 px-4 py-2 bg-green-500 text-white rounded" id="quiz-back-btn">Back to Quizzes</button>`;
+          document.getElementById('quiz-back-btn').onclick = () => {
+            quizDetail.classList.add('hidden');
+            quizzesList.classList.remove('hidden');
+          };
+        }
+        renderQuestion();
+      }
+      renderQuizzes();
+
+      // --- GAMES (Simple Memory Game) ---
+      const gamesList = document.getElementById('games-list');
+      const gameDetail = document.getElementById('game-detail');
+      function renderGames() {
+        gamesList.innerHTML = '';
+        AppData.games.forEach(game => {
+          const div = document.createElement('div');
+          div.className = 'bg-white rounded shadow p-4 flex items-center gap-4 cursor-pointer hover:bg-yellow-100';
+          div.innerHTML = `<div><h3 class="text-xl font-bold">${game.title}</h3><p>${game.description}</p></div>`;
+          div.onclick = () => showGameDetail(game);
+          gamesList.appendChild(div);
+        });
+      }
+      function showGameDetail(game) {
+        gameDetail.classList.remove('hidden');
+        gamesList.classList.add('hidden');
+        if (game.id === 'manna-match') {
+          // Expanded memory match game (4x4 grid)
+          const symbols = ['🌈','🌈','🕊️','🕊️','🌟','🌟','✝️','✝️','🦁','🦁','🐟','🐟','🌿','🌿','🛳️','🛳️'];
+          let shuffled = symbols.sort(() => Math.random() - 0.5);
+          let flipped = [], matched = [];
+          function renderBoard() {
+            gameDetail.innerHTML = `<div style='position:relative;'><button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${game.title}</h3><div class="grid grid-cols-4 gap-2 mb-4">${shuffled.map((s, i) => `
+              <button class="w-16 h-16 text-3xl bg-yellow-100 rounded shadow flex items-center justify-center ${matched.includes(i) || flipped.includes(i) ? '' : 'bg-yellow-300'}"" data-idx="${i}" ${matched.includes(i) ? 'disabled' : ''}>${matched.includes(i) || flipped.includes(i) ? s : '?'}</button>`).join('')}</div><div id="manna-status" style="position:relative;"></div></div>`;
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            Array.from(gameDetail.querySelectorAll('button[data-idx]')).forEach(btn => {
+              btn.onclick = () => {
+                const idx = parseInt(btn.dataset.idx);
+                if (flipped.length < 2 && !flipped.includes(idx) && !matched.includes(idx)) {
+                  flipped.push(idx);
+                  renderBoard();
+                  if (flipped.length === 2) {
+                    setTimeout(() => {
+                      if (shuffled[flipped[0]] === shuffled[flipped[1]]) {
+                        matched.push(...flipped);
+                        if (matched.length === shuffled.length) {
+                          document.getElementById('manna-status').innerHTML = '<div class="text-green-600 font-bold flex flex-col items-center">You matched all pairs! 🎉<span style="font-size:2.5rem; animation: bounce 1s infinite alternate;">🎊✨🎊</span></div>';
+                          launchConfetti('manna-status');
+                        }
+                      }
+                      flipped = [];
+                      renderBoard();
+                    }, 800);
+                  }
+                }
+              };
+            });
+          }
+          renderBoard();
+          return;
+        }
+        if (game.id === 'maze-run') {
+          // Maze levels
+          const levels = [
+            {
+              maze: [
+                [0,1,0,0,0,1,0],
+                [0,1,0,1,0,1,0],
+                [0,0,0,1,0,0,0],
+                [1,1,0,1,1,1,0],
+                [0,0,0,0,0,1,0],
+                [0,1,1,1,0,1,0],
+                [0,0,0,1,0,0,0]
+              ],
+              start: {x:0, y:0}, goal: {x:6, y:6}
+            },
+            {
+              maze: [
+                [0,1,1,0,0,1,0],
+                [0,0,0,1,0,1,0],
+                [1,1,0,1,0,0,0],
+                [0,0,0,0,1,1,0],
+                [0,1,1,0,0,1,0],
+                [0,1,0,0,0,1,0],
+                [0,0,0,1,0,0,0]
+              ],
+              start: {x:0, y:0}, goal: {x:6, y:6}
+            },
+            {
+              maze: [
+                [0,1,1,0,1,1,0],
+                [0,0,0,0,0,1,0],
+                [1,1,1,1,0,1,0],
+                [0,0,0,1,0,0,0],
+                [0,1,0,0,1,1,0],
+                [0,1,0,1,0,1,0],
+                [0,0,0,1,0,0,0]
+              ],
+              start: {x:0, y:0}, goal: {x:6, y:6},
+              trivia: [
+                {x:1, y:1, q: 'Who led the Israelites out of Egypt?', a: ['Moses', 'Noah', 'David'], correct: 0},
+                {x:3, y:3, q: 'What did God send to feed the Israelites in the desert?', a: ['Manna', 'Quail', 'Fish'], correct: 0},
+                {x:5, y:5, q: 'What sea did the Israelites cross?', a: ['Red Sea', 'Dead Sea', 'Sea of Galilee'], correct: 0}
+              ]
+            },
+            {
+              maze: [
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0]
+              ],
+              start: {x:0, y:0}, goal: {x:19, y:19},
+              trivia: [
+                {x:2, y:0, q: 'Who received the Ten Commandments?', a: ['Moses', 'Noah', 'Abraham'], correct: 0},
+                {x:4, y:2, q: 'What river did Moses turn to blood?', a: ['Nile', 'Jordan', 'Euphrates'], correct: 0},
+                {x:6, y:4, q: 'Who was Joseph sold to?', a: ['Ishmaelites', 'Philistines', 'Romans'], correct: 0},
+                {x:8, y:6, q: 'What did God send to feed the Israelites?', a: ['Manna', 'Fish', 'Bread'], correct: 0},
+                {x:10, y:8, q: 'What city did the Israelites march around?', a: ['Jericho', 'Babylon', 'Nineveh'], correct: 0},
+                {x:12, y:10, q: 'How many days did Jesus fast in the desert?', a: ['40', '30', '50'], correct: 0},
+                {x:14, y:12, q: 'Who was thrown into the lion\'s den?', a: ['Daniel', 'David', 'Joseph'], correct: 0},
+                {x:16, y:14, q: 'What did Jesus turn water into?', a: ['Wine', 'Milk', 'Oil'], correct: 0},
+                {x:18, y:16, q: 'Who was the first king of Israel?', a: ['Saul', 'David', 'Solomon'], correct: 0}
+              ]
+            }
+          ];
+          let currentLevel = 0;
+          let player = {...levels[currentLevel].start};
+          const goal = () => levels[currentLevel].goal;
+          function playSound(type) {
+            let audio;
+            if (type === 'move') {
+              audio = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1b2.mp3'); // short click
+            } else if (type === 'win') {
+              audio = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1b2.mp3'); // can use a different sound
+              audio.playbackRate = 0.7;
+            }
+            if (audio) audio.play();
+          }
+          let triviaAnswered = [];
+          function isOnTrivia(x, y) {
+            const t = levels[currentLevel].trivia;
+            if (!t) return null;
+            return t.find((tp, idx) => tp.x === x && tp.y === y && !triviaAnswered.includes(idx)) || null;
+          }
+          function renderMaze() {
+            const maze = levels[currentLevel].maze;
+            const mazeSize = maze.length;
+            const cellSize = mazeSize > 10 ? '1.8rem' : '2.5rem';
+            const fontSize = mazeSize > 10 ? '1.2rem' : '1.7rem';
+            
+            let html = `<button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">Maze Run: Egypt to Canaan</h3><div class="mb-2">Level <span id="maze-level-num">${currentLevel+1}</span> of ${levels.length} &mdash; Use arrow keys or buttons to move!</div><div style="display:grid;grid-template-columns:repeat(${mazeSize},${cellSize});gap:2px;justify-content:center;position:relative;max-width:100%;overflow-x:auto;">`;
+            
+            for (let y=0; y<mazeSize; y++) {
+              for (let x=0; x<mazeSize; x++) {
+                let cell = '';
+                if (player.x === x && player.y === y) {
+                  cell = '<span draggable="true" id="maze-player" style="cursor:grab;">🚶</span>';
+                }
+                else if (goal().x === x && goal().y === y) cell = '🏜️';
+                else if (levels[currentLevel].trivia && levels[currentLevel].trivia.some((tp, idx) => tp.x === x && tp.y === y && !triviaAnswered.includes(idx))) cell = '❓';
+                else if (maze[y][x] === 1) cell = '<span style="color:#aaa;">⬛</span>';
+                else cell = '';
+                html += `<div data-x="${x}" data-y="${y}" style="width:${cellSize};height:${cellSize};display:flex;align-items:center;justify-content:center;font-size:${fontSize};background:#fff;border-radius:0.3rem;box-shadow:0 1px 2px #ccc;" class="maze-cell">${cell}</div>`;
+              }
+            }
+            html += `</div><div class="game-controls flex flex-col gap-2 justify-center mt-4"><div class="control-row"><button id="maze-up" class="px-3 py-1 bg-blue-200 rounded">⬆️</button></div><div class="control-row flex gap-2 justify-center"><button id="maze-left" class="px-3 py-1 bg-blue-200 rounded">⬅️</button><button id="maze-down" class="px-3 py-1 bg-blue-200 rounded">⬇️</button><button id="maze-right" class="px-3 py-1 bg-blue-200 rounded">➡️</button></div></div><div id="maze-status" style="position:relative;min-height:2.5rem;"></div>`;
+            gameDetail.innerHTML = html;
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            document.getElementById('maze-up').onclick = () => move(0,-1);
+            document.getElementById('maze-down').onclick = () => move(0,1);
+            document.getElementById('maze-left').onclick = () => move(-1,0);
+            document.getElementById('maze-right').onclick = () => move(1,0);
+            if (player.x === goal().x && player.y === goal().y) {
+              document.getElementById('maze-status').innerHTML = `<div class="text-green-600 font-bold flex flex-col items-center">You reached Canaan! 🏜️🎉<span style="font-size:2.5rem; animation:bounce 1s infinite alternate;">🌈✨🎊</span><button id="maze-next-level" class="mt-2 px-4 py-2 bg-green-500 text-white rounded">Next Level</button></div>`;
+              launchConfetti('maze-status');
+              playSound('win');
+              document.getElementById('maze-next-level').onclick = () => {
+                if (currentLevel < levels.length-1) {
+                  currentLevel++;
+                  player = {...levels[currentLevel].start};
+                  renderMaze();
+                } else {
+                  document.getElementById('maze-status').innerHTML = '<div class="text-green-600 font-bold flex flex-col items-center">You finished all levels! 🏆🎉</div>';
+                }
+              };
+            }
+          }
+          function move(dx,dy) {
+            const maze = levels[currentLevel].maze;
+            const mazeSize = maze.length;
+            const nx = player.x + dx, ny = player.y + dy;
+            if (nx>=0 && nx<mazeSize && ny>=0 && ny<mazeSize && maze[ny][nx] === 0) {
+              const trivia = isOnTrivia(nx, ny);
+              if (trivia) {
+                showTrivia(trivia, nx, ny);
+                return;
+              }
+              player.x = nx; player.y = ny;
+              playSound('move');
+              renderMaze();
+            }
+          }
+          function showTrivia(trivia, tx, ty) {
+            let html = `<div class="flex flex-col items-center"><button class="mb-2 text-yellow-500 underline self-start" id="back-to-maze">&larr; Back to Maze</button><h3 class="text-xl font-bold mb-2">Trivia Checkpoint!</h3><div class="mb-4">${trivia.q}</div>` + trivia.a.map((a, i) => `<button class="block w-full mb-2 p-2 border rounded bg-yellow-200 hover:bg-yellow-300" data-ans="${i}">${a}</button>`).join('') + '</div>';
+            gameDetail.innerHTML = html;
+            document.getElementById('back-to-maze').onclick = () => renderMaze();
+            Array.from(gameDetail.querySelectorAll('button[data-ans]')).forEach(btn => {
+              btn.onclick = () => {
+                if (parseInt(btn.dataset.ans) === trivia.correct) {
+                  triviaAnswered.push(levels[currentLevel].trivia.findIndex(tp => tp.x === tx && tp.y === ty));
+                  player.x = tx; player.y = ty;
+                  playSound('move');
+                  renderMaze();
+                } else {
+                  btn.classList.add('bg-red-300');
+                }
+              };
+            });
+          }
+          window.onkeydown = function(e) {
+            if (!gameDetail.classList.contains('hidden')) {
+              if (e.key === 'ArrowUp') move(0,-1);
+              if (e.key === 'ArrowDown') move(0,1);
+              if (e.key === 'ArrowLeft') move(-1,0);
+              if (e.key === 'ArrowRight') move(1,0);
+            }
+          };
+          renderMaze();
+          return;
+        }
+        if (game.id === 'bible-trivia') {
+          // Simple Bible Trivia game
+          const triviaQuestions = [
+            { q: 'Who built the ark?', a: ['Moses', 'Noah', 'David'], correct: 1 },
+            { q: 'Where was Jesus born?', a: ['Nazareth', 'Bethlehem', 'Jerusalem'], correct: 1 },
+            { q: 'Who was swallowed by a big fish?', a: ['Jonah', 'Daniel', 'Paul'], correct: 0 },
+            { q: 'What did God create on the first day?', a: ['Light', 'Animals', 'People'], correct: 0 },
+            { q: 'Who killed Goliath?', a: ['David', 'Saul', 'Solomon'], correct: 0 },
+            { q: 'What is the first book of the Bible?', a: ['Genesis', 'Exodus', 'Matthew'], correct: 0 },
+            { q: 'Who received the Ten Commandments?', a: ['Abraham', 'Moses', 'Elijah'], correct: 1 },
+            { q: 'What did God put in the sky after the flood?', a: ['A rainbow', 'A cloud', 'A star'], correct: 0 }
+          ];
+          let questions = triviaQuestions.sort(() => Math.random() - 0.5).slice(0, 5);
+          let qIndex = 0, score = 0;
+          function renderQuestion() {
+            const q = questions[qIndex];
+            gameDetail.innerHTML = `<button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${game.title}</h3><div class="mb-4">Question ${qIndex+1} of ${questions.length}</div><div class="mb-4">${q.q}</div>` + q.a.map((a, i) => `<button class="block w-full mb-2 p-2 border rounded bg-yellow-200 hover:bg-yellow-300" data-ans="${i}">${a}</button>`).join('');
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            Array.from(gameDetail.querySelectorAll('button[data-ans]')).forEach(btn => {
+              btn.onclick = () => {
+                if (parseInt(btn.dataset.ans) === q.correct) score++;
+                qIndex++;
+                if (qIndex < questions.length) renderQuestion();
+                else showResult();
+              };
+            });
+          }
+          function showResult() {
+            gameDetail.innerHTML = `<div class="flex flex-col items-center"><h3 class="text-2xl font-bold mb-2">Quiz Complete!</h3><div style="font-size:2.5rem; animation:bounce 1s infinite alternate;">🏆🎉🌟</div><p>Your score: ${score} / ${questions.length}</p><button class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded" id="trivia-back-btn">Back to Games</button></div>`;
+            launchConfetti('game-detail');
+            document.getElementById('trivia-back-btn').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+          }
+          renderQuestion();
+          return;
+        }
+        if (game.id === 'ark-builder') {
+          // Enhanced Ark Builder drag-and-drop game
+          gameDetail.innerHTML = `
+            <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+            <h3 class="text-2xl font-bold mb-2">${game.title}</h3>
+            <div class="mb-4 text-center">
+              <p class="text-lg mb-2">Help Noah build the ark and gather all the animals!</p>
+              <div class="flex justify-center gap-4 mb-4">
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-blue-600" id="animals-collected">0</div>
+                  <div class="text-sm text-gray-600">Animals Collected</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-green-600" id="total-animals">0</div>
+                  <div class="text-sm text-gray-600">Total Animals</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-purple-600" id="progress-percent">0%</div>
+                  <div class="text-sm text-gray-600">Progress</div>
+                </div>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+            </div>
+            <div id="ark-drop" class="w-full h-40 bg-gradient-to-b from-yellow-100 to-yellow-200 border-4 border-yellow-400 rounded-lg flex items-center justify-center mb-6 relative overflow-hidden" style="position:relative;">
+              <span style='font-size:4rem;'>🛳️</span>
+              <div id="ark-animals" class="absolute inset-0 flex flex-wrap items-center justify-center p-4"></div>
+            </div>
+            <div class="mb-4">
+              <h4 class="text-lg font-bold mb-2 text-center">Animals to Collect:</h4>
+              <div id="animals" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+            </div>
+            <div id="ark-status" class="text-center"></div>
+            <div class="flex justify-center gap-4 mt-6">
+              <button id="reset-ark" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reset Ark</button>
+              <button id="ark-hint" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Hint</button>
+            </div>
+          `;
+          
+          document.getElementById('back-to-games').onclick = () => {
+            gameDetail.classList.add('hidden');
+            gamesList.classList.remove('hidden');
+          };
+          
+          const animals = [
+            { id: 'lion', emoji: '🦁', name: 'Lion', category: 'Wild' },
+            { id: 'elephant', emoji: '🐘', name: 'Elephant', category: 'Wild' },
+            { id: 'zebra', emoji: '🦓', name: 'Zebra', category: 'Wild' },
+            { id: 'giraffe', emoji: '🦒', name: 'Giraffe', category: 'Wild' },
+            { id: 'tiger', emoji: '🐅', name: 'Tiger', category: 'Wild' },
+            { id: 'bear', emoji: '🐻', name: 'Bear', category: 'Wild' },
+            { id: 'wolf', emoji: '🐺', name: 'Wolf', category: 'Wild' },
+            { id: 'fox', emoji: '🦊', name: 'Fox', category: 'Wild' },
+            { id: 'cow', emoji: '🐄', name: 'Cow', category: 'Farm' },
+            { id: 'pig', emoji: '🐷', name: 'Pig', category: 'Farm' },
+            { id: 'sheep', emoji: '🐑', name: 'Sheep', category: 'Farm' },
+            { id: 'goat', emoji: '🐐', name: 'Goat', category: 'Farm' },
+            { id: 'duck', emoji: '🦆', name: 'Duck', category: 'Bird' },
+            { id: 'owl', emoji: '🦉', name: 'Owl', category: 'Bird' },
+            { id: 'eagle', emoji: '🦅', name: 'Eagle', category: 'Bird' },
+            { id: 'penguin', emoji: '🐧', name: 'Penguin', category: 'Bird' }
+          ];
+          
+          let inArk = [];
+          let arkAnimals = [];
+          
+          // Update counters and progress
+          function updateCounters() {
+            const collected = inArk.length;
+            const total = animals.length;
+            const percent = Math.round((collected / total) * 100);
+            
+            document.getElementById('animals-collected').textContent = collected;
+            document.getElementById('total-animals').textContent = total;
+            document.getElementById('progress-percent').textContent = percent + '%';
+            document.getElementById('progress-bar').style.width = percent + '%';
+          }
+          
+          // Render animals in ark
+          function renderArkAnimals() {
+            const arkAnimalsDiv = document.getElementById('ark-animals');
+            arkAnimalsDiv.innerHTML = arkAnimals.map(animal => 
+              `<span class="text-2xl m-1 animate-bounce" title="${animal.name}">${animal.emoji}</span>`
+            ).join('');
+          }
+          
+          // Create animal buttons
+          const animalsDiv = document.getElementById('animals');
+          animals.forEach(animal => {
+            const animalCard = document.createElement('div');
+            animalCard.className = 'animal-card bg-white rounded-lg p-3 shadow-md border-2 border-transparent hover:border-yellow-400 transition-all duration-200 cursor-grab active:cursor-grabbing';
+            animalCard.innerHTML = `
+              <div class="text-center">
+                <div class="text-3xl mb-1">${animal.emoji}</div>
+                <div class="text-xs font-semibold text-gray-700">${animal.name}</div>
+                <div class="text-xs text-gray-500">${animal.category}</div>
+              </div>
+            `;
+            animalCard.id = 'animal-' + animal.id;
+            animalCard.setAttribute('draggable', 'true');
+            animalCard.setAttribute('data-animal-id', animal.id);
+            
+            // Drag and drop functionality
+            animalCard.ondragstart = e => {
+              e.dataTransfer.setData('text/plain', animal.id);
+              animalCard.classList.add('opacity-50');
+            };
+            
+            animalCard.ondragend = e => {
+              animalCard.classList.remove('opacity-50');
+            };
+            
+            animalsDiv.appendChild(animalCard);
+          });
+          
+          const arkDrop = document.getElementById('ark-drop');
+          
+          arkDrop.ondragover = e => {
+            e.preventDefault();
+            arkDrop.classList.add('bg-yellow-300');
+            arkDrop.classList.add('scale-105');
+          };
+          
+          arkDrop.ondragleave = () => {
+            arkDrop.classList.remove('bg-yellow-300');
+            arkDrop.classList.remove('scale-105');
+          };
+          
+          arkDrop.ondrop = e => {
+            e.preventDefault();
+            arkDrop.classList.remove('bg-yellow-300');
+            arkDrop.classList.remove('scale-105');
+            
+            const animalId = e.dataTransfer.getData('text/plain');
+            if (!inArk.includes(animalId)) {
+              const animal = animals.find(a => a.id === animalId);
+              inArk.push(animalId);
+              arkAnimals.push(animal);
+              
+              // Hide the animal card
+              const animalCard = document.getElementById('animal-' + animalId);
+              if (animalCard) {
+                animalCard.style.transform = 'scale(0.8)';
+                animalCard.style.opacity = '0.3';
+                animalCard.style.pointerEvents = 'none';
+              }
+              
+              // Add to ark with animation
+              renderArkAnimals();
+              updateCounters();
+              
+              // Play sound effect
+              playSound('move');
+              
+              // Check if all animals are collected
+              if (inArk.length === animals.length) {
+                setTimeout(() => {
+                  document.getElementById('ark-status').innerHTML = `
+                    <div class="text-green-600 font-bold flex flex-col items-center">
+                      <div class="text-2xl mb-2">🎉 All animals are safe in the ark! 🎉</div>
+                      <div class="text-lg mb-4">Noah's mission is complete!</div>
+                      <div style="font-size:3rem; animation:bounce 1s infinite alternate;">🛳️🌈✨</div>
+                      <div class="mt-4 text-sm text-gray-600">The rain is coming, but everyone is safe!</div>
+                    </div>
+                  `;
+                  launchConfetti('ark-status');
+                  playSound('win');
+                }, 500);
+              } else if (inArk.length % 5 === 0) {
+                // Progress celebration every 5 animals
+                document.getElementById('ark-status').innerHTML = `
+                  <div class="text-blue-600 font-bold text-center">
+                    <div style="font-size:2rem; animation:bounce 1s infinite alternate;">🎊</div>
+                    <div>Great progress! ${inArk.length} animals collected!</div>
+                  </div>
+                `;
+                setTimeout(() => {
+                  document.getElementById('ark-status').innerHTML = '';
+                }, 2000);
+              }
+            }
+          };
+          
+          // Reset functionality
+          document.getElementById('reset-ark').onclick = () => {
+            inArk = [];
+            arkAnimals = [];
+            
+            // Reset all animal cards
+            animals.forEach(animal => {
+              const animalCard = document.getElementById('animal-' + animal.id);
+              if (animalCard) {
+                animalCard.style.transform = 'scale(1)';
+                animalCard.style.opacity = '1';
+                animalCard.style.pointerEvents = 'auto';
+              }
+            });
+            
+            renderArkAnimals();
+            updateCounters();
+            document.getElementById('ark-status').innerHTML = '';
+          };
+          
+          // Hint functionality
+          document.getElementById('ark-hint').onclick = () => {
+            const remainingAnimals = animals.filter(animal => !inArk.includes(animal.id));
+            if (remainingAnimals.length > 0) {
+              const randomAnimal = remainingAnimals[Math.floor(Math.random() * remainingAnimals.length)];
+              const animalCard = document.getElementById('animal-' + randomAnimal.id);
+              
+              // Highlight the animal
+              animalCard.style.transform = 'scale(1.1)';
+              animalCard.style.boxShadow = '0 0 20px #fbbf24';
+              animalCard.style.borderColor = '#fbbf24';
+              
+              document.getElementById('ark-status').innerHTML = `
+                <div class="text-yellow-600 font-bold text-center">
+                  <div style="font-size:2rem; animation:bounce 1s infinite alternate;">💡</div>
+                  <div>Try collecting the ${randomAnimal.name}!</div>
+                </div>
+              `;
+              
+              setTimeout(() => {
+                animalCard.style.transform = 'scale(1)';
+                animalCard.style.boxShadow = '';
+                animalCard.style.borderColor = 'transparent';
+                document.getElementById('ark-status').innerHTML = '';
+              }, 3000);
+            }
+          };
+          
+          // Initialize counters
+          updateCounters();
+          return;
+        }
+        let comingSoonMsg = '';
+        switch (game.id) {
+          case 'ark-builder':
+            comingSoonMsg = 'Help Noah build the ark by solving puzzles. This building game is coming soon!';
+            break;
+          default:
+            comingSoonMsg = 'Game coming soon!';
+        }
+        gameDetail.innerHTML = `<button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${game.title}</h3><p>${comingSoonMsg}</p>`;
+        document.getElementById('back-to-games').onclick = () => {
+          gameDetail.classList.add('hidden');
+          gamesList.classList.remove('hidden');
+        };
+      }
+      renderGames();
+
+
+      // Default section
+      showSection('home');
+    });
+  </script>
+  
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8 mt-12">
+    <div class="container max-w-4xl mx-auto px-4">
+      <div class="text-center">
+        <div class="mb-4">
+          <h3 class="text-2xl font-bold mb-2">🌟 Little Disciples</h3>
+          <p class="text-gray-300">Nurturing young hearts with God's love</p>
+        </div>
+        <div class="flex justify-center items-center gap-4 mb-4">
+          <div class="text-center">
+            <div class="text-3xl mb-1">📚</div>
+            <div class="text-sm text-gray-400">Bible Stories</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl mb-1">🎮</div>
+            <div class="text-sm text-gray-400">Fun Games</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl mb-1">🧠</div>
+            <div class="text-sm text-gray-400">Learning</div>
+          </div>
+
+        </div>
+        <div class="border-t border-gray-700 pt-4">
+          <p class="text-gray-400 text-sm">
+            © 2025 <span class="font-semibold text-blue-400">Gateway Analytics</span> - Empowering young minds through faith-based education
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+      <style>
+      @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+      @keyframes confetti-fall {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        80% { opacity: 1; }
+        100% { transform: translateY(350px) rotate(360deg); opacity: 0; }
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 640px) {
+        .container { padding: 0.5rem; }
+        .text-4xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.125rem; }
+        .text-xl { font-size: 1rem; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .gap-6 { gap: 1rem; }
+        .p-4 { padding: 0.75rem; }
+        .p-6 { padding: 1rem; }
+        .mb-4 { margin-bottom: 0.75rem; }
+        .mb-6 { margin-bottom: 1rem; }
+        .w-20 { width: 3rem; }
+        .h-20 { height: 3rem; }
+        .w-16 { width: 2.5rem; }
+        .h-16 { height: 2.5rem; }
+        .text-4xl { font-size: 1.5rem; }
+        .text-6xl { font-size: 2.5rem; }
+        .text-sm { font-size: 0.75rem; }
+        .text-lg { font-size: 0.875rem; }
+        .text-xs { font-size: 0.625rem; }
+        .px-3 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .px-4 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 0.75rem; }
+        .rounded-2xl { border-radius: 0.75rem; }
+        .shadow-lg { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .shadow-xl { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+      }
+      
+      @media (max-width: 768px) {
+        .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .text-4xl { font-size: 1.875rem; }
+        .text-3xl { font-size: 1.5rem; }
+        .text-2xl { font-size: 1.25rem; }
+        .text-xl { font-size: 1.125rem; }
+        .w-20 { width: 4rem; }
+        .h-20 { height: 4rem; }
+        .w-16 { width: 3rem; }
+        .h-16 { height: 3rem; }
+        .text-4xl { font-size: 2rem; }
+        .text-6xl { font-size: 3rem; }
+      }
+      
+      @media (max-width: 1024px) {
+        .container { max-width: 100%; }
+        .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      
+      /* Mobile Navigation */
+      @media (max-width: 640px) {
+        .nav-tabs { 
+          flex-direction: column; 
+          gap: 0.5rem; 
+          padding: 0.5rem;
+        }
+        .nav-tabs button { 
+          width: 100%; 
+          text-align: center;
+          padding: 0.75rem;
+          font-size: 0.875rem;
+        }
+        .flex-wrap { flex-wrap: wrap; }
+        .justify-center { justify-content: center; }
+        .items-center { align-items: center; }
+      }
+      
+      /* Maze Game Responsive */
+      @media (max-width: 640px) {
+        .maze-grid { 
+          grid-template-columns: repeat(auto-fit, 1.5rem) !important;
+          gap: 1px !important;
+          font-size: 0.75rem !important;
+        }
+        .maze-cell { 
+          width: 1.5rem !important; 
+          height: 1.5rem !important; 
+          font-size: 0.75rem !important;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .maze-grid { 
+          grid-template-columns: repeat(auto-fit, 2rem) !important;
+          gap: 2px !important;
+          font-size: 1rem !important;
+        }
+        .maze-cell { 
+          width: 2rem !important; 
+          height: 2rem !important; 
+          font-size: 1rem !important;
+        }
+      }
+      
+      /* Game Controls Responsive */
+      @media (max-width: 640px) {
+        .game-controls { 
+          flex-direction: column; 
+          gap: 0.5rem; 
+          align-items: center;
+        }
+        .game-controls button { 
+          width: 3rem; 
+          height: 3rem; 
+          font-size: 1.25rem;
+        }
+        .control-row { 
+          display: flex; 
+          gap: 0.5rem; 
+          justify-content: center;
+        }
+      }
+      
+      /* Story Cards Responsive */
+      @media (max-width: 640px) {
+        .story-card { 
+          min-height: auto; 
+          padding: 0.75rem;
+        }
+        .story-image { 
+          width: 3rem; 
+          height: 3rem; 
+          font-size: 1.5rem;
+        }
+        .story-title { 
+          font-size: 0.875rem; 
+          line-height: 1.2;
+        }
+        .story-text { 
+          font-size: 0.75rem; 
+          line-height: 1.3;
+        }
+      }
+      
+      /* Bible Section Responsive */
+      @media (max-width: 640px) {
+        .bible-controls { 
+          flex-direction: column; 
+          gap: 0.5rem;
+        }
+        .bible-controls select { 
+          width: 100%; 
+          padding: 0.5rem;
+        }
+        .bible-text { 
+          font-size: 0.875rem; 
+          line-height: 1.5;
+          padding: 0.75rem;
+        }
+      }
+      
+      /* Quiz Section Responsive */
+      @media (max-width: 640px) {
+        .quiz-question { 
+          font-size: 0.875rem; 
+          margin-bottom: 0.75rem;
+        }
+        .quiz-options { 
+          gap: 0.5rem;
+        }
+        .quiz-options button { 
+          padding: 0.75rem; 
+          font-size: 0.875rem;
+        }
+      }
+      
+
+      
+      /* Home Page Specific Styles */
+      .quick-card {
+        transform: translateY(0);
+        transition: all 0.3s ease;
+      }
+      
+      .quick-card:hover {
+        transform: translateY(-8px);
+      }
+      
+      .quick-card:active {
+        transform: translateY(-4px);
+      }
+      
+      /* Image Generator Responsive */
+      @media (max-width: 640px) {
+        #image-generator .flex {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        #image-generator select,
+        #image-generator button {
+          width: 100%;
+        }
+        #generated-image-container .flex {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        #generated-image-container button {
+          width: 100%;
+        }
+      }
+      
+      /* Verse of the Day Animation */
+      #verse-content {
+        transition: opacity 0.3s ease;
+      }
+      
+      /* Sticky Navigation */
+      .nav-tabs {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+      }
+      
+      /* Header Gradient Animation */
+      header {
+        background-size: 200% 200%;
+        animation: gradientShift 10s ease infinite;
+      }
+      
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      /* Mobile Responsive for Home Page */
+      @media (max-width: 768px) {
+        .quick-card {
+          padding: 1rem;
+        }
+        
+        .quick-card .text-4xl {
+          font-size: 2rem;
+        }
+        
+        .quick-card h3 {
+          font-size: 1.125rem;
+        }
+        
+        .quick-card p {
+          font-size: 0.875rem;
+        }
+      }
+      
+      @media (max-width: 640px) {
+        .nav-tabs .flex {
+          gap: 0.5rem;
+        }
+        
+        .nav-tab {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
+        
+        .nav-tab i {
+          font-size: 0.875rem;
+        }
+      }
+      
+      /* Footer Responsive */
+      @media (max-width: 640px) {
+        footer .flex {
+          gap: 1rem;
+        }
+        
+        footer .text-3xl {
+          font-size: 1.5rem;
+        }
+        
+        footer .text-2xl {
+          font-size: 1.25rem;
+        }
+        
+        footer .text-sm {
+          font-size: 0.75rem;
+        }
+      }
+    </style>
