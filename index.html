@@ -462,9 +462,14 @@
       ],
       games: [
         { id: 'manna-match', title: 'Manna Match', icon: 'fa-brain', description: 'Match the pairs of Bible symbols.' },
-        { id: 'bible-trivia', title: 'Bible Trivia', icon: 'fa-question-circle', description: 'Test your knowledge with fun Bible trivia questions.' },
+        { id: 'bible-trivia', title: 'Bible Trivia', icon: 'fa-question-circle', description: 'Test your knowledge with fun Bible trivia questions across 4 difficulty levels!' },
         { id: 'ark-builder', title: 'Ark Builder', icon: 'fa-hammer', description: 'Help Noah build the ark by solving puzzles.' },
-        { id: 'maze-run', title: 'Maze Run: Egypt to Canaan', icon: 'fa-map', description: 'Guide the Israelites from Egypt to Canaan through a fun maze! (Coming soon)' }
+        { id: 'maze-run', title: 'Maze Run: Egypt to Canaan', icon: 'fa-map', description: 'Guide the Israelites from Egypt to Canaan through a fun maze!' },
+        { id: 'word-search', title: 'Bible Word Search', icon: 'fa-search', description: 'Find hidden Bible words in a fun word search puzzle.' },
+        { id: 'puzzle-slide', title: 'Bible Puzzle Slide', icon: 'fa-puzzle-piece', description: 'Slide tiles to complete beautiful Bible picture puzzles.' },
+        { id: 'memory-verse', title: 'Memory Verse Challenge', icon: 'fa-book', description: 'Memorize and recite Bible verses in this fun challenge.' },
+        { id: 'bible-colors', title: 'Bible Color by Number', icon: 'fa-palette', description: 'Color beautiful Bible scenes by following the numbers.' },
+        { id: 'story-builder', title: 'Story Builder', icon: 'fa-edit', description: 'Create your own Bible stories by arranging story elements.' }
       ],
       bibleBookData: {
         "Genesis": 50, "Exodus": 40, "Leviticus": 27, "Numbers": 36, "Deuteronomy": 34, "Joshua": 24, "Judges": 21, "Ruth": 4, "1 Samuel": 31, "2 Samuel": 24, "1 Kings": 22, "2 Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10, "Nehemiah": 13, "Esther": 10, "Job": 42, "Psalms": 150, "Proverbs": 31, "Ecclesiastes": 12, "Song of Solomon": 8, "Isaiah": 66, "Jeremiah": 52, "Lamentations": 5, "Ezekiel": 48, "Daniel": 12, "Hosea": 14, "Joel": 3, "Amos": 9, "Obadiah": 1, "Jonah": 4, "Micah": 7, "Nahum": 3, "Habakkuk": 3, "Zephaniah": 3, "Haggai": 2, "Zechariah": 14, "Malachi": 4, "Matthew": 28, "Mark": 16, "Luke": 24, "John": 21, "Acts": 28, "Romans": 16, "1 Corinthians": 16, "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6, "Philippians": 4, "Colossians": 4, "1 Thessalonians": 5, "2 Thessalonians": 3, "1 Timothy": 6, "2 Timothy": 4, "Titus": 3, "Philemon": 1, "Hebrews": 13, "James": 5, "1 Peter": 5, "2 Peter": 3, "1 John": 5, "2 John": 1, "3 John": 1, "Jude": 1, "Revelation": 22
@@ -1233,44 +1238,340 @@
           return;
         }
         if (game.id === 'bible-trivia') {
-          // Simple Bible Trivia game
-          const triviaQuestions = [
-            { q: 'Who built the ark?', a: ['Moses', 'Noah', 'David'], correct: 1 },
-            { q: 'Where was Jesus born?', a: ['Nazareth', 'Bethlehem', 'Jerusalem'], correct: 1 },
-            { q: 'Who was swallowed by a big fish?', a: ['Jonah', 'Daniel', 'Paul'], correct: 0 },
-            { q: 'What did God create on the first day?', a: ['Light', 'Animals', 'People'], correct: 0 },
-            { q: 'Who killed Goliath?', a: ['David', 'Saul', 'Solomon'], correct: 0 },
-            { q: 'What is the first book of the Bible?', a: ['Genesis', 'Exodus', 'Matthew'], correct: 0 },
-            { q: 'Who received the Ten Commandments?', a: ['Abraham', 'Moses', 'Elijah'], correct: 1 },
-            { q: 'What did God put in the sky after the flood?', a: ['A rainbow', 'A cloud', 'A star'], correct: 0 }
-          ];
-          let questions = triviaQuestions.sort(() => Math.random() - 0.5).slice(0, 5);
+          // Comprehensive Bible Trivia with 4 difficulty levels
+          const bibleTriviaQuestions = {
+            beginner: [
+              { q: 'Who built the ark?', a: ['Moses', 'Noah', 'David'], correct: 1 },
+              { q: 'Where was Jesus born?', a: ['Nazareth', 'Bethlehem', 'Jerusalem'], correct: 1 },
+              { q: 'Who was swallowed by a big fish?', a: ['Jonah', 'Daniel', 'Paul'], correct: 0 },
+              { q: 'What did God create on the first day?', a: ['Light', 'Animals', 'People'], correct: 0 },
+              { q: 'Who killed Goliath?', a: ['David', 'Saul', 'Solomon'], correct: 0 },
+              { q: 'What is the first book of the Bible?', a: ['Genesis', 'Exodus', 'Matthew'], correct: 0 },
+              { q: 'Who received the Ten Commandments?', a: ['Abraham', 'Moses', 'Elijah'], correct: 1 },
+              { q: 'What did God put in the sky after the flood?', a: ['A rainbow', 'A cloud', 'A star'], correct: 0 },
+              { q: 'How many disciples did Jesus have?', a: ['10', '12', '15'], correct: 1 },
+              { q: 'What did Jesus turn water into?', a: ['Milk', 'Wine', 'Oil'], correct: 1 },
+              { q: 'Who was Jesus\' mother?', a: ['Mary', 'Elizabeth', 'Sarah'], correct: 0 },
+              { q: 'What animal did Jesus ride into Jerusalem?', a: ['Horse', 'Donkey', 'Camel'], correct: 1 },
+              { q: 'Who denied Jesus three times?', a: ['Peter', 'John', 'Judas'], correct: 0 },
+              { q: 'What did Jesus feed 5000 people with?', a: ['Bread and fish', 'Manna', 'Lamb'], correct: 0 },
+              { q: 'Who was the first king of Israel?', a: ['David', 'Saul', 'Solomon'], correct: 1 },
+              { q: 'What is the last book of the Bible?', a: ['Revelation', 'Jude', 'John'], correct: 0 },
+              { q: 'Who was thrown into the lions\' den?', a: ['Daniel', 'David', 'Joseph'], correct: 0 },
+              { q: 'What did Joseph\'s brothers sell him for?', a: ['Gold', 'Silver', 'Slaves'], correct: 1 },
+              { q: 'Who was the strongest man in the Bible?', a: ['David', 'Samson', 'Goliath'], correct: 1 },
+              { q: 'What did God create on the seventh day?', a: ['Animals', 'People', 'Rest'], correct: 2 },
+              { q: 'Who was Jesus\' earthly father?', a: ['Joseph', 'Zechariah', 'John'], correct: 0 },
+              { q: 'What did the wise men bring to Jesus?', a: ['Gold, frankincense, myrrh', 'Food and water', 'Clothes'], correct: 0 },
+              { q: 'Who baptized Jesus?', a: ['John the Baptist', 'Peter', 'Paul'], correct: 0 },
+              { q: 'What did Jesus say was the greatest commandment?', a: ['Love God', 'Love your neighbor', 'Love God and neighbor'], correct: 2 },
+              { q: 'Who was the first person to see Jesus after he rose?', a: ['Peter', 'Mary Magdalene', 'John'], correct: 1 }
+            ],
+            intermediate: [
+              { q: 'How many days and nights did Jesus fast in the desert?', a: ['30', '40', '50'], correct: 1 },
+              { q: 'Who was the first martyr of the Christian church?', a: ['Stephen', 'Peter', 'Paul'], correct: 0 },
+              { q: 'What city was Paul from?', a: ['Jerusalem', 'Tarsus', 'Antioch'], correct: 1 },
+              { q: 'How many books are in the New Testament?', a: ['25', '27', '29'], correct: 1 },
+              { q: 'Who wrote most of the New Testament letters?', a: ['Peter', 'Paul', 'John'], correct: 1 },
+              { q: 'What was the name of the garden where Jesus prayed before his arrest?', a: ['Gethsemane', 'Eden', 'Olives'], correct: 0 },
+              { q: 'How many times did Peter deny Jesus?', a: ['2', '3', '4'], correct: 1 },
+              { q: 'Who was the first person to enter the Promised Land?', a: ['Moses', 'Joshua', 'Caleb'], correct: 1 },
+              { q: 'What was the name of the mountain where Moses received the Ten Commandments?', a: ['Sinai', 'Horeb', 'Both are correct'], correct: 2 },
+              { q: 'How many years did the Israelites wander in the desert?', a: ['30', '40', '50'], correct: 1 },
+              { q: 'Who was the first person to see the risen Jesus?', a: ['Peter', 'Mary Magdalene', 'The disciples'], correct: 1 },
+              { q: 'What was the name of the place where Jesus was crucified?', a: ['Golgotha', 'Gethsemane', 'Bethlehem'], correct: 0 },
+              { q: 'How many people were on Noah\'s ark?', a: ['6', '8', '10'], correct: 1 },
+              { q: 'Who was the first person to be called a Christian?', a: ['Peter', 'Paul', 'Barnabas'], correct: 1 },
+              { q: 'What was the name of the river where Jesus was baptized?', a: ['Jordan', 'Nile', 'Euphrates'], correct: 0 },
+              { q: 'Who was the first Gentile to become a Christian?', a: ['Cornelius', 'Lydia', 'The Ethiopian eunuch'], correct: 0 },
+              { q: 'What was the name of the city where the first Christian church was established?', a: ['Jerusalem', 'Antioch', 'Rome'], correct: 0 },
+              { q: 'How many times did Jesus appear to his disciples after his resurrection?', a: ['5', '10', 'Many times'], correct: 2 },
+              { q: 'Who was the first person to preach the gospel to Gentiles?', a: ['Peter', 'Paul', 'Philip'], correct: 0 },
+              { q: 'What was the name of the place where the Holy Spirit came on the disciples?', a: ['Upper Room', 'Temple', 'Mount of Olives'], correct: 0 },
+              { q: 'How many people were baptized on the day of Pentecost?', a: ['About 3000', 'About 5000', 'About 1000'], correct: 0 },
+              { q: 'Who was the first person to be healed by Jesus?', a: ['A leper', 'A blind man', 'A paralyzed man'], correct: 0 },
+              { q: 'What was the name of the woman who washed Jesus\' feet with her hair?', a: ['Mary Magdalene', 'Mary of Bethany', 'The sinful woman'], correct: 2 },
+              { q: 'Who was the first person to recognize Jesus as the Messiah?', a: ['Peter', 'John', 'Andrew'], correct: 0 },
+              { q: 'What was the name of the place where Jesus was born?', a: ['Bethlehem', 'Nazareth', 'Jerusalem'], correct: 0 },
+              { q: 'How many years did Jesus preach and teach?', a: ['1 year', '3 years', '5 years'], correct: 1 }
+            ],
+            advanced: [
+              { q: 'What was the name of the high priest who presided over Jesus\' trial?', a: ['Caiaphas', 'Annas', 'Both were involved'], correct: 2 },
+              { q: 'How many times did Jesus predict his death and resurrection?', a: ['2', '3', '4'], correct: 1 },
+              { q: 'What was the name of the disciple who betrayed Jesus?', a: ['Judas Iscariot', 'Judas Thaddeus', 'Simon the Zealot'], correct: 0 },
+              { q: 'Who was the first person to be raised from the dead by Jesus?', a: ['Lazarus', 'Jairus\' daughter', 'The widow\'s son'], correct: 2 },
+              { q: 'What was the name of the Roman governor who sentenced Jesus to death?', a: ['Pilate', 'Herod', 'Caesar'], correct: 0 },
+              { q: 'How many times did Jesus appear to Paul?', a: ['1', '2', '3'], correct: 0 },
+              { q: 'What was the name of the place where Jesus was buried?', a: ['Joseph\'s tomb', 'A cave', 'A garden tomb'], correct: 0 },
+              { q: 'Who was the first person to enter the empty tomb?', a: ['Peter', 'John', 'Mary Magdalene'], correct: 1 },
+              { q: 'What was the name of the disciple who doubted Jesus\' resurrection?', a: ['Thomas', 'Philip', 'Bartholomew'], correct: 0 },
+              { q: 'How many times did Jesus appear to his disciples in the 40 days after his resurrection?', a: ['5', '10', 'Many times'], correct: 2 },
+              { q: 'What was the name of the place where Jesus ascended to heaven?', a: ['Mount of Olives', 'Mount Sinai', 'Mount Tabor'], correct: 0 },
+              { q: 'Who was the first person to be martyred for his faith in Jesus?', a: ['Stephen', 'James', 'Peter'], correct: 0 },
+              { q: 'What was the name of the city where Paul was converted?', a: ['Damascus', 'Jerusalem', 'Antioch'], correct: 0 },
+              { q: 'How many years did Paul spend in Arabia after his conversion?', a: ['1', '3', '5'], correct: 1 },
+              { q: 'What was the name of the first Gentile church?', a: ['Antioch', 'Corinth', 'Ephesus'], correct: 0 },
+              { q: 'Who was the first person to be called a Christian?', a: ['Peter', 'Paul', 'Barnabas'], correct: 1 },
+              { q: 'What was the name of the place where the Holy Spirit came on the Gentiles?', a: ['Cornelius\' house', 'Antioch', 'Jerusalem'], correct: 0 },
+              { q: 'How many missionary journeys did Paul make?', a: ['2', '3', '4'], correct: 1 },
+              { q: 'What was the name of the island where Paul was shipwrecked?', a: ['Malta', 'Cyprus', 'Crete'], correct: 0 },
+              { q: 'Who was the first person to write a gospel?', a: ['Matthew', 'Mark', 'Luke'], correct: 1 },
+              { q: 'What was the name of the place where Jesus was tempted by Satan?', a: ['Desert', 'Mountain', 'Temple'], correct: 0 },
+              { q: 'How many times did Jesus cleanse the temple?', a: ['1', '2', '3'], correct: 1 },
+              { q: 'What was the name of the disciple who was a tax collector?', a: ['Matthew', 'Mark', 'Luke'], correct: 0 },
+              { q: 'Who was the first person to be healed on the Sabbath?', a: ['A man with a withered hand', 'A blind man', 'A paralyzed man'], correct: 0 },
+              { q: 'What was the name of the place where Jesus performed his first miracle?', a: ['Cana', 'Nazareth', 'Jerusalem'], correct: 0 },
+              { q: 'How many times did Jesus raise people from the dead?', a: ['2', '3', '4'], correct: 1 }
+            ],
+            expert: [
+              { q: 'What was the name of the Roman emperor during Jesus\' ministry?', a: ['Augustus', 'Tiberius', 'Caligula'], correct: 1 },
+              { q: 'How many times did Jesus use the phrase "Truly, truly" in John\'s gospel?', a: ['20', '25', '30'], correct: 1 },
+              { q: 'What was the name of the disciple who was a Zealot?', a: ['Simon', 'Judas', 'Thaddeus'], correct: 0 },
+              { q: 'Who was the first person to be baptized by John the Baptist?', a: ['Jesus', 'The Pharisees', 'The people of Jerusalem'], correct: 2 },
+              { q: 'What was the name of the place where Jesus was transfigured?', a: ['Mount Tabor', 'Mount Hermon', 'Mount Sinai'], correct: 0 },
+              { q: 'How many times did Jesus use parables in his teaching?', a: ['About 30', 'About 40', 'About 50'], correct: 1 },
+              { q: 'What was the name of the disciple who was a fisherman?', a: ['Peter', 'Andrew', 'Both'], correct: 2 },
+              { q: 'Who was the first person to be healed by touching Jesus\' garment?', a: ['A woman with bleeding', 'A blind man', 'A leper'], correct: 0 },
+              { q: 'What was the name of the place where Jesus was arrested?', a: ['Gethsemane', 'Mount of Olives', 'Both are correct'], correct: 2 },
+              { q: 'How many times did Jesus predict Peter\'s denial?', a: ['1', '2', '3'], correct: 1 },
+              { q: 'What was the name of the disciple who was a doctor?', a: ['Luke', 'Mark', 'John'], correct: 0 },
+              { q: 'Who was the first person to be called "the rock" by Jesus?', a: ['Peter', 'Paul', 'John'], correct: 0 },
+              { q: 'What was the name of the place where Jesus was crucified?', a: ['Golgotha', 'Calvary', 'Both are correct'], correct: 2 },
+              { q: 'How many times did Jesus appear to Mary Magdalene?', a: ['1', '2', '3'], correct: 0 },
+              { q: 'What was the name of the disciple who was a twin?', a: ['Thomas', 'Philip', 'Bartholomew'], correct: 0 },
+              { q: 'Who was the first person to be healed on the Sabbath?', a: ['A man with a withered hand', 'A blind man', 'A paralyzed man'], correct: 0 },
+              { q: 'What was the name of the place where Jesus performed his last miracle?', a: ['Gethsemane', 'Golgotha', 'The temple'], correct: 0 },
+              { q: 'How many times did Jesus cleanse the temple?', a: ['1', '2', '3'], correct: 1 },
+              { q: 'What was the name of the disciple who was a tax collector?', a: ['Matthew', 'Mark', 'Luke'], correct: 0 },
+              { q: 'Who was the first person to be called "the beloved disciple"?', a: ['John', 'Peter', 'James'], correct: 0 },
+              { q: 'What was the name of the place where Jesus was buried?', a: ['Joseph\'s tomb', 'A cave', 'A garden tomb'], correct: 0 },
+              { q: 'How many times did Jesus appear to his disciples in the 40 days after his resurrection?', a: ['5', '10', 'Many times'], correct: 2 },
+              { q: 'What was the name of the place where Jesus ascended to heaven?', a: ['Mount of Olives', 'Mount Sinai', 'Mount Tabor'], correct: 0 },
+              { q: 'Who was the first person to be martyred for his faith in Jesus?', a: ['Stephen', 'James', 'Peter'], correct: 0 },
+              { q: 'What was the name of the city where Paul was converted?', a: ['Damascus', 'Jerusalem', 'Antioch'], correct: 0 },
+              { q: 'How many years did Paul spend in Arabia after his conversion?', a: ['1', '3', '5'], correct: 1 },
+              { q: 'What was the name of the first Gentile church?', a: ['Antioch', 'Corinth', 'Ephesus'], correct: 0 },
+              { q: 'Who was the first person to be called a Christian?', a: ['Peter', 'Paul', 'Barnabas'], correct: 1 },
+              { q: 'What was the name of the place where the Holy Spirit came on the Gentiles?', a: ['Cornelius\' house', 'Antioch', 'Jerusalem'], correct: 0 },
+              { q: 'How many missionary journeys did Paul make?', a: ['2', '3', '4'], correct: 1 },
+              { q: 'What was the name of the island where Paul was shipwrecked?', a: ['Malta', 'Cyprus', 'Crete'], correct: 0 },
+              { q: 'Who was the first person to write a gospel?', a: ['Matthew', 'Mark', 'Luke'], correct: 1 },
+              { q: 'What was the name of the place where Jesus was tempted by Satan?', a: ['Desert', 'Mountain', 'Temple'], correct: 0 },
+              { q: 'How many times did Jesus cleanse the temple?', a: ['1', '2', '3'], correct: 1 },
+              { q: 'What was the name of the disciple who was a tax collector?', a: ['Matthew', 'Mark', 'Luke'], correct: 0 },
+              { q: 'Who was the first person to be healed on the Sabbath?', a: ['A man with a withered hand', 'A blind man', 'A paralyzed man'], correct: 0 },
+              { q: 'What was the name of the place where Jesus performed his first miracle?', a: ['Cana', 'Nazareth', 'Jerusalem'], correct: 0 },
+              { q: 'How many times did Jesus raise people from the dead?', a: ['2', '3', '4'], correct: 1 }
+            ]
+          };
+          // Enhanced Bible Trivia with difficulty levels
+          let selectedLevel = 'beginner';
+          let questions = [];
           let qIndex = 0, score = 0;
-          function renderQuestion() {
-            const q = questions[qIndex];
-            gameDetail.innerHTML = `<button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button><h3 class="text-2xl font-bold mb-2">${game.title}</h3><div class="mb-4">Question ${qIndex+1} of ${questions.length}</div><div class="mb-4">${q.q}</div>` + q.a.map((a, i) => `<button class="block w-full mb-2 p-2 border rounded bg-yellow-200 hover:bg-yellow-300" data-ans="${i}">${a}</button>`).join('');
+          
+          function showLevelSelection() {
+            gameDetail.innerHTML = `
+              <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+              <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+              <p class="text-lg mb-6 text-center">Choose your difficulty level:</p>
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <button class="level-btn p-4 rounded-lg bg-green-100 hover:bg-green-200 border-2 border-green-300" data-level="beginner">
+                  <div class="text-2xl mb-2">🌱</div>
+                  <div class="font-bold">Beginner</div>
+                  <div class="text-sm text-gray-600">Easy questions for young learners</div>
+                </button>
+                <button class="level-btn p-4 rounded-lg bg-yellow-100 hover:bg-yellow-200 border-2 border-yellow-300" data-level="intermediate">
+                  <div class="text-2xl mb-2">⭐</div>
+                  <div class="font-bold">Intermediate</div>
+                  <div class="text-sm text-gray-600">Moderate difficulty for growing knowledge</div>
+                </button>
+                <button class="level-btn p-4 rounded-lg bg-orange-100 hover:bg-orange-200 border-2 border-orange-300" data-level="advanced">
+                  <div class="text-2xl mb-2">🔥</div>
+                  <div class="font-bold">Advanced</div>
+                  <div class="text-sm text-gray-600">Challenging questions for Bible scholars</div>
+                </button>
+                <button class="level-btn p-4 rounded-lg bg-red-100 hover:bg-red-200 border-2 border-red-300" data-level="expert">
+                  <div class="text-2xl mb-2">👑</div>
+                  <div class="font-bold">Expert</div>
+                  <div class="text-sm text-gray-600">Very difficult for Bible experts</div>
+                </button>
+              </div>
+            `;
+            
             document.getElementById('back-to-games').onclick = () => {
               gameDetail.classList.add('hidden');
               gamesList.classList.remove('hidden');
             };
-            Array.from(gameDetail.querySelectorAll('button[data-ans]')).forEach(btn => {
+            
+            document.querySelectorAll('.level-btn').forEach(btn => {
               btn.onclick = () => {
-                if (parseInt(btn.dataset.ans) === q.correct) score++;
-                qIndex++;
-                if (qIndex < questions.length) renderQuestion();
-                else showResult();
+                selectedLevel = btn.dataset.level;
+                startTrivia();
               };
             });
           }
+          
+          function startTrivia() {
+            const levelQuestions = bibleTriviaQuestions[selectedLevel];
+            questions = levelQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+            qIndex = 0;
+            score = 0;
+            renderQuestion();
+          }
+          
+          function renderQuestion() {
+            const q = questions[qIndex];
+            const levelEmojis = { beginner: '🌱', intermediate: '⭐', advanced: '🔥', expert: '👑' };
+            
+            gameDetail.innerHTML = `
+              <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold">${game.title}</h3>
+                <div class="text-lg font-bold ${getLevelColor(selectedLevel)}">${levelEmojis[selectedLevel]} ${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)}</div>
+              </div>
+              <div class="bg-white rounded-lg p-6 shadow-lg mb-6">
+                <div class="flex justify-between items-center mb-4">
+                  <div class="text-lg font-semibold">Question ${qIndex + 1} of ${questions.length}</div>
+                  <div class="text-lg font-bold text-blue-600">Score: ${score}</div>
+                </div>
+                <div class="text-xl mb-6 font-medium">${q.q}</div>
+                <div class="space-y-3">
+                  ${q.a.map((a, i) => `
+                    <button class="w-full p-4 text-left border-2 border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 answer-btn" data-ans="${i}">
+                      <span class="font-bold mr-3">${String.fromCharCode(65 + i)}.</span>${a}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+            
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+              btn.onclick = () => {
+                const selectedAnswer = parseInt(btn.dataset.ans);
+                const isCorrect = selectedAnswer === q.correct;
+                
+                // Disable all buttons
+                document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
+                
+                // Show correct/incorrect feedback
+                document.querySelectorAll('.answer-btn').forEach((b, i) => {
+                  if (i === q.correct) {
+                    b.classList.add('bg-green-100', 'border-green-500');
+                  } else if (i === selectedAnswer && !isCorrect) {
+                    b.classList.add('bg-red-100', 'border-red-500');
+                  }
+                });
+                
+                if (isCorrect) {
+                  score++;
+                  playSound('correct');
+                } else {
+                  playSound('incorrect');
+                }
+                
+                // Show feedback message
+                const feedback = document.createElement('div');
+                feedback.className = `text-center p-4 rounded-lg mb-4 ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+                feedback.innerHTML = isCorrect ? '✅ Correct! Well done!' : '❌ Incorrect. The correct answer is highlighted.';
+                gameDetail.querySelector('.bg-white').appendChild(feedback);
+                
+                setTimeout(() => {
+                  qIndex++;
+                  if (qIndex < questions.length) {
+                    renderQuestion();
+                  } else {
+                    showResult();
+                  }
+                }, 2000);
+              };
+            });
+          }
+          
+          function getLevelColor(level) {
+            const colors = {
+              beginner: 'text-green-600',
+              intermediate: 'text-yellow-600',
+              advanced: 'text-orange-600',
+              expert: 'text-red-600'
+            };
+            return colors[level] || 'text-blue-600';
+          }
+          
           function showResult() {
-            gameDetail.innerHTML = `<div class="flex flex-col items-center"><h3 class="text-2xl font-bold mb-2">Quiz Complete!</h3><div style="font-size:2.5rem; animation:bounce 1s infinite alternate;">🏆🎉🌟</div><p>Your score: ${score} / ${questions.length}</p><button class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded" id="trivia-back-btn">Back to Games</button></div>`;
+            const percentage = Math.round((score / questions.length) * 100);
+            const levelEmojis = { beginner: '🌱', intermediate: '⭐', advanced: '🔥', expert: '👑' };
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage >= 90) {
+              message = 'Excellent! You\'re a Bible expert!';
+              emoji = '🏆👑🌟';
+            } else if (percentage >= 70) {
+              message = 'Great job! You know your Bible well!';
+              emoji = '🎉⭐✨';
+            } else if (percentage >= 50) {
+              message = 'Good effort! Keep learning!';
+              emoji = '👍📚💪';
+            } else {
+              message = 'Keep studying! You\'ll get better!';
+              emoji = '📖💡🎯';
+            }
+            
+            gameDetail.innerHTML = `
+              <div class="text-center">
+                <h3 class="text-3xl font-bold mb-4">Quiz Complete!</h3>
+                <div class="text-6xl mb-4" style="animation: bounce 1s infinite alternate;">${emoji}</div>
+                <div class="bg-white rounded-lg p-6 shadow-lg mb-6">
+                  <div class="text-2xl font-bold mb-2">${levelEmojis[selectedLevel]} ${selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)} Level</div>
+                  <div class="text-4xl font-bold text-blue-600 mb-2">${score} / ${questions.length}</div>
+                  <div class="text-xl font-semibold mb-2">${percentage}%</div>
+                  <div class="text-lg text-gray-600 mb-4">${message}</div>
+                  <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                    <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                  </div>
+                </div>
+                <div class="flex justify-center gap-4">
+                  <button class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" id="play-again-btn">Play Again</button>
+                  <button class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition" id="change-level-btn">Change Level</button>
+                  <button class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition" id="trivia-back-btn">Back to Games</button>
+                </div>
+              </div>
+            `;
+            
             launchConfetti('game-detail');
+            
+            document.getElementById('play-again-btn').onclick = () => {
+              startTrivia();
+            };
+            
+            document.getElementById('change-level-btn').onclick = () => {
+              showLevelSelection();
+            };
+            
             document.getElementById('trivia-back-btn').onclick = () => {
               gameDetail.classList.add('hidden');
               gamesList.classList.remove('hidden');
             };
           }
-          renderQuestion();
+          
+          // Add sound effects
+          function playSound(type) {
+            const audio = new Audio();
+            if (type === 'correct') {
+              audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT';
+            } else {
+              audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT';
+            }
+            audio.play().catch(() => {});
+          }
+          
+          showLevelSelection();
           return;
         }
         if (game.id === 'ark-builder') {
@@ -1509,6 +1810,757 @@
           updateCounters();
           return;
         }
+        
+        // Word Search Game
+        if (game.id === 'word-search') {
+          const words = ['JESUS', 'LOVE', 'FAITH', 'HOPE', 'PEACE', 'JOY', 'GOD', 'BIBLE'];
+          const gridSize = 12;
+          const grid = [];
+          
+          // Initialize empty grid
+          for (let i = 0; i < gridSize; i++) {
+            grid[i] = [];
+            for (let j = 0; j < gridSize; j++) {
+              grid[i][j] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            }
+          }
+          
+          // Place words in grid
+          words.forEach(word => {
+            let placed = false;
+            while (!placed) {
+              const direction = Math.floor(Math.random() * 8); // 8 directions
+              const row = Math.floor(Math.random() * gridSize);
+              const col = Math.floor(Math.random() * gridSize);
+              
+              if (canPlaceWord(grid, word, row, col, direction)) {
+                placeWord(grid, word, row, col, direction);
+                placed = true;
+              }
+            }
+          });
+          
+          function canPlaceWord(grid, word, row, col, direction) {
+            const directions = [
+              [-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]
+            ];
+            const [dr, dc] = directions[direction];
+            
+            for (let i = 0; i < word.length; i++) {
+              const r = row + i * dr;
+              const c = col + i * dc;
+              if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) return false;
+              if (grid[r][c] !== word[i] && grid[r][c] !== String.fromCharCode(65 + Math.floor(Math.random() * 26))) return false;
+            }
+            return true;
+          }
+          
+          function placeWord(grid, word, row, col, direction) {
+            const directions = [
+              [-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]
+            ];
+            const [dr, dc] = directions[direction];
+            
+            for (let i = 0; i < word.length; i++) {
+              grid[row + i * dr][col + i * dc] = word[i];
+            }
+          }
+          
+          let foundWords = [];
+          let selectedCells = [];
+          
+          gameDetail.innerHTML = `
+            <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+            <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+            <div class="mb-4 text-center">
+              <p class="text-lg mb-2">Find these Bible words in the grid:</p>
+              <div class="flex flex-wrap justify-center gap-2 mb-4">
+                ${words.map(word => `
+                  <span class="px-3 py-1 rounded-full ${foundWords.includes(word) ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800'} font-bold">
+                    ${word}
+                  </span>
+                `).join('')}
+              </div>
+              <div class="text-lg font-bold text-blue-600">Found: ${foundWords.length} / ${words.length}</div>
+            </div>
+            <div class="flex justify-center mb-6">
+              <div id="word-search-grid" class="grid grid-cols-12 gap-1 bg-white p-4 rounded-lg shadow-lg"></div>
+            </div>
+            <div class="text-center">
+              <button id="reset-word-search" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reset Game</button>
+            </div>
+          `;
+          
+          document.getElementById('back-to-games').onclick = () => {
+            gameDetail.classList.add('hidden');
+            gamesList.classList.remove('hidden');
+          };
+          
+          // Render grid
+          const gridDiv = document.getElementById('word-search-grid');
+          grid.forEach((row, i) => {
+            row.forEach((cell, j) => {
+              const cellDiv = document.createElement('div');
+              cellDiv.className = 'w-8 h-8 border border-gray-300 flex items-center justify-center font-bold text-sm cursor-pointer hover:bg-blue-100 transition-colors';
+              cellDiv.textContent = cell;
+              cellDiv.dataset.row = i;
+              cellDiv.dataset.col = j;
+              gridDiv.appendChild(cellDiv);
+            });
+          });
+          
+          // Word search logic
+          let isSelecting = false;
+          let startCell = null;
+          
+          gridDiv.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('w-8')) {
+              isSelecting = true;
+              startCell = e.target;
+              selectedCells = [e.target];
+              e.target.classList.add('bg-yellow-200');
+            }
+          });
+          
+          gridDiv.addEventListener('mouseover', (e) => {
+            if (isSelecting && e.target.classList.contains('w-8')) {
+              selectedCells.forEach(cell => cell.classList.remove('bg-yellow-200'));
+              selectedCells = getCellsBetween(startCell, e.target);
+              selectedCells.forEach(cell => cell.classList.add('bg-yellow-200'));
+            }
+          });
+          
+          gridDiv.addEventListener('mouseup', () => {
+            if (isSelecting && selectedCells.length > 0) {
+              const word = selectedCells.map(cell => cell.textContent).join('');
+              if (words.includes(word) && !foundWords.includes(word)) {
+                foundWords.push(word);
+                selectedCells.forEach(cell => {
+                  cell.classList.remove('bg-yellow-200');
+                  cell.classList.add('bg-green-200');
+                });
+                
+                // Update word list
+                const wordSpans = gameDetail.querySelectorAll('.px-3.py-1');
+                wordSpans.forEach(span => {
+                  if (span.textContent === word) {
+                    span.classList.remove('bg-blue-200', 'text-blue-800');
+                    span.classList.add('bg-green-200', 'text-green-800');
+                  }
+                });
+                
+                // Update counter
+                const counter = gameDetail.querySelector('.text-blue-600');
+                counter.textContent = `Found: ${foundWords.length} / ${words.length}`;
+                
+                if (foundWords.length === words.length) {
+                  setTimeout(() => {
+                    gameDetail.querySelector('.text-center').innerHTML += `
+                      <div class="mt-4 text-green-600 font-bold">
+                        <div class="text-2xl mb-2">🎉 All words found! 🎉</div>
+                        <div style="font-size:2rem; animation:bounce 1s infinite alternate;">🏆✨🌟</div>
+                      </div>
+                    `;
+                    launchConfetti('game-detail');
+                  }, 500);
+                }
+              } else {
+                selectedCells.forEach(cell => cell.classList.remove('bg-yellow-200'));
+              }
+            }
+            isSelecting = false;
+            selectedCells = [];
+          });
+          
+          function getCellsBetween(start, end) {
+            const startRow = parseInt(start.dataset.row);
+            const startCol = parseInt(start.dataset.col);
+            const endRow = parseInt(end.dataset.row);
+            const endCol = parseInt(end.dataset.col);
+            
+            const cells = [];
+            const maxDistance = Math.max(Math.abs(endRow - startRow), Math.abs(endCol - startCol));
+            
+            for (let i = 0; i <= maxDistance; i++) {
+              const row = startRow + Math.round((endRow - startRow) * i / maxDistance);
+              const col = startCol + Math.round((endCol - startCol) * i / maxDistance);
+              const cell = gridDiv.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+              if (cell) cells.push(cell);
+            }
+            
+            return cells;
+          }
+          
+          document.getElementById('reset-word-search').onclick = () => {
+            foundWords = [];
+            gridDiv.querySelectorAll('.w-8').forEach(cell => {
+              cell.classList.remove('bg-green-200', 'bg-yellow-200');
+            });
+            const wordSpans = gameDetail.querySelectorAll('.px-3.py-1');
+            wordSpans.forEach(span => {
+              span.classList.remove('bg-green-200', 'text-green-800');
+              span.classList.add('bg-blue-200', 'text-blue-800');
+            });
+            const counter = gameDetail.querySelector('.text-blue-600');
+            counter.textContent = `Found: ${foundWords.length} / ${words.length}`;
+          };
+          
+          return;
+        }
+        
+        // Puzzle Slide Game
+        if (game.id === 'puzzle-slide') {
+          const puzzleSize = 3;
+          const tiles = [];
+          let emptyTile = { row: puzzleSize - 1, col: puzzleSize - 1 };
+          let moves = 0;
+          
+          // Initialize puzzle
+          for (let i = 0; i < puzzleSize * puzzleSize - 1; i++) {
+            tiles.push(i + 1);
+          }
+          tiles.push(0); // Empty tile
+          
+          // Shuffle tiles
+          for (let i = tiles.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+          }
+          
+          function renderPuzzle() {
+            const puzzleDiv = document.getElementById('puzzle-container');
+            puzzleDiv.innerHTML = '';
+            
+            for (let i = 0; i < puzzleSize; i++) {
+              for (let j = 0; j < puzzleSize; j++) {
+                const tileValue = tiles[i * puzzleSize + j];
+                const tileDiv = document.createElement('div');
+                tileDiv.className = `w-20 h-20 border-2 border-gray-300 flex items-center justify-center font-bold text-2xl cursor-pointer transition-all duration-200 ${tileValue === 0 ? 'bg-gray-200' : 'bg-blue-500 text-white hover:bg-blue-600'}`;
+                tileDiv.textContent = tileValue === 0 ? '' : tileValue;
+                tileDiv.dataset.row = i;
+                tileDiv.dataset.col = j;
+                tileDiv.onclick = () => moveTile(i, j);
+                puzzleDiv.appendChild(tileDiv);
+              }
+            }
+          }
+          
+          function moveTile(row, col) {
+            const distance = Math.abs(row - emptyTile.row) + Math.abs(col - emptyTile.col);
+            if (distance === 1) {
+              const tileIndex = row * puzzleSize + col;
+              const emptyIndex = emptyTile.row * puzzleSize + emptyTile.col;
+              
+              [tiles[tileIndex], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[tileIndex]];
+              emptyTile = { row, col };
+              moves++;
+              
+              renderPuzzle();
+              updateMoves();
+              
+              if (isPuzzleSolved()) {
+                setTimeout(() => {
+                  gameDetail.querySelector('.text-center').innerHTML += `
+                    <div class="mt-4 text-green-600 font-bold">
+                      <div class="text-2xl mb-2">🎉 Puzzle Solved! 🎉</div>
+                      <div style="font-size:2rem; animation:bounce 1s infinite alternate;">🏆✨🌟</div>
+                    </div>
+                  `;
+                  launchConfetti('game-detail');
+                }, 500);
+              }
+            }
+          }
+          
+          function isPuzzleSolved() {
+            for (let i = 0; i < tiles.length - 1; i++) {
+              if (tiles[i] !== i + 1) return false;
+            }
+            return tiles[tiles.length - 1] === 0;
+          }
+          
+          function updateMoves() {
+            document.getElementById('moves-counter').textContent = moves;
+          }
+          
+          gameDetail.innerHTML = `
+            <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+            <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+            <div class="mb-4 text-center">
+              <p class="text-lg mb-2">Slide the tiles to arrange them in order (1-8)</p>
+              <div class="text-lg font-bold text-blue-600 mb-4">Moves: <span id="moves-counter">0</span></div>
+            </div>
+            <div class="flex justify-center mb-6">
+              <div id="puzzle-container" class="grid grid-cols-3 gap-1 bg-white p-4 rounded-lg shadow-lg"></div>
+            </div>
+            <div class="text-center">
+              <button id="reset-puzzle" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reset Puzzle</button>
+            </div>
+          `;
+          
+          document.getElementById('back-to-games').onclick = () => {
+            gameDetail.classList.add('hidden');
+            gamesList.classList.remove('hidden');
+          };
+          
+          renderPuzzle();
+          
+          document.getElementById('reset-puzzle').onclick = () => {
+            // Reinitialize and shuffle
+            tiles.length = 0;
+            for (let i = 0; i < puzzleSize * puzzleSize - 1; i++) {
+              tiles.push(i + 1);
+            }
+            tiles.push(0);
+            
+            for (let i = tiles.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+            
+            emptyTile = { row: puzzleSize - 1, col: puzzleSize - 1 };
+            moves = 0;
+            renderPuzzle();
+            updateMoves();
+          };
+          
+          return;
+        }
+        
+        // Memory Verse Challenge
+        if (game.id === 'memory-verse') {
+          const verses = [
+            { text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", reference: "John 3:16", difficulty: "easy" },
+            { text: "I can do all things through Christ who strengthens me.", reference: "Philippians 4:13", difficulty: "easy" },
+            { text: "Trust in the Lord with all your heart and lean not on your own understanding.", reference: "Proverbs 3:5", difficulty: "medium" },
+            { text: "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", reference: "Joshua 1:9", difficulty: "medium" },
+            { text: "Love is patient, love is kind. It does not envy, it does not boast, it is not proud.", reference: "1 Corinthians 13:4", difficulty: "hard" }
+          ];
+          
+          let currentVerse = null;
+          let currentStep = 0;
+          let score = 0;
+          
+          function startVerseChallenge() {
+            currentVerse = verses[Math.floor(Math.random() * verses.length)];
+            currentStep = 0;
+            showVerseStep();
+          }
+          
+          function showVerseStep() {
+            const steps = [
+              { title: "Read the verse", action: "read" },
+              { title: "Memorize the verse", action: "memorize" },
+              { title: "Fill in the blanks", action: "fill" },
+              { title: "Complete the verse", action: "complete" }
+            ];
+            
+            const step = steps[currentStep];
+            gameDetail.innerHTML = `
+              <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+              <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+              <div class="mb-4 text-center">
+                <div class="text-lg font-bold text-blue-600 mb-2">Step ${currentStep + 1} of ${steps.length}</div>
+                <div class="text-lg font-bold mb-4">${step.title}</div>
+                <div class="text-lg font-bold text-green-600">Score: ${score}</div>
+              </div>
+              <div class="bg-white rounded-lg p-6 shadow-lg mb-6">
+                ${getStepContent(step.action)}
+              </div>
+            `;
+            
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            
+            setupStepHandlers(step.action);
+          }
+          
+          function getStepContent(action) {
+            switch (action) {
+              case "read":
+                return `
+                  <div class="text-center">
+                    <div class="text-xl mb-4 font-medium">"${currentVerse.text}"</div>
+                    <div class="text-lg text-gray-600">${currentVerse.reference}</div>
+                    <button id="next-step" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">I've Read It</button>
+                  </div>
+                `;
+              case "memorize":
+                return `
+                  <div class="text-center">
+                    <div class="text-lg mb-4">Take time to memorize this verse:</div>
+                    <div class="text-xl mb-4 font-medium">"${currentVerse.text}"</div>
+                    <div class="text-lg text-gray-600 mb-4">${currentVerse.reference}</div>
+                    <div class="text-sm text-gray-500 mb-4">(The verse will be hidden in the next step)</div>
+                    <button id="next-step" class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">I'm Ready</button>
+                  </div>
+                `;
+              case "fill":
+                const words = currentVerse.text.split(' ');
+                const blanks = words.map((word, i) => {
+                  if (i % 3 === 0) return `<input type="text" class="border-b-2 border-blue-300 px-2 py-1 mx-1 text-center w-20" data-word="${word}">`;
+                  return word;
+                }).join(' ');
+                
+                return `
+                  <div class="text-center">
+                    <div class="text-lg mb-4">Fill in the missing words:</div>
+                    <div class="text-lg mb-4">${blanks}</div>
+                    <div class="text-lg text-gray-600 mb-4">${currentVerse.reference}</div>
+                    <button id="check-fill" class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">Check Answers</button>
+                  </div>
+                `;
+              case "complete":
+                return `
+                  <div class="text-center">
+                    <div class="text-lg mb-4">Type the complete verse from memory:</div>
+                    <textarea id="verse-input" class="w-full p-3 border-2 border-gray-300 rounded-lg mb-4" rows="4" placeholder="Type the verse here..."></textarea>
+                    <button id="check-complete" class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">Check Verse</button>
+                  </div>
+                `;
+            }
+          }
+          
+          function setupStepHandlers(action) {
+            switch (action) {
+              case "read":
+              case "memorize":
+                document.getElementById('next-step').onclick = () => {
+                  currentStep++;
+                  if (currentStep < 4) {
+                    showVerseStep();
+                  } else {
+                    showFinalResult();
+                  }
+                };
+                break;
+              case "fill":
+                document.getElementById('check-fill').onclick = () => {
+                  const inputs = document.querySelectorAll('input[data-word]');
+                  let correct = 0;
+                  inputs.forEach(input => {
+                    if (input.value.toLowerCase() === input.dataset.word.toLowerCase()) {
+                      correct++;
+                      input.classList.add('border-green-500', 'bg-green-50');
+                    } else {
+                      input.classList.add('border-red-500', 'bg-red-50');
+                    }
+                  });
+                  
+                  if (correct === inputs.length) {
+                    score += 10;
+                    setTimeout(() => {
+                      currentStep++;
+                      showVerseStep();
+                    }, 2000);
+                  }
+                };
+                break;
+              case "complete":
+                document.getElementById('check-complete').onclick = () => {
+                  const input = document.getElementById('verse-input');
+                  const userVerse = input.value.toLowerCase();
+                  const correctVerse = currentVerse.text.toLowerCase();
+                  
+                  const similarity = calculateSimilarity(userVerse, correctVerse);
+                  
+                  if (similarity >= 0.8) {
+                    score += 20;
+                    input.classList.add('border-green-500', 'bg-green-50');
+                    setTimeout(() => {
+                      currentStep++;
+                      showVerseStep();
+                    }, 2000);
+                  } else {
+                    input.classList.add('border-red-500', 'bg-red-50');
+                  }
+                };
+                break;
+            }
+          }
+          
+          function calculateSimilarity(str1, str2) {
+            const words1 = str1.split(' ');
+            const words2 = str2.split(' ');
+            let matches = 0;
+            
+            words1.forEach(word1 => {
+              if (words2.includes(word1)) matches++;
+            });
+            
+            return matches / Math.max(words1.length, words2.length);
+          }
+          
+          function showFinalResult() {
+            gameDetail.innerHTML = `
+              <div class="text-center">
+                <h3 class="text-3xl font-bold mb-4">Memory Challenge Complete!</h3>
+                <div class="text-6xl mb-4" style="animation: bounce 1s infinite alternate;">🏆📖✨</div>
+                <div class="bg-white rounded-lg p-6 shadow-lg mb-6">
+                  <div class="text-2xl font-bold mb-2">Final Score: ${score}</div>
+                  <div class="text-lg text-gray-600 mb-4">Great job memorizing God's Word!</div>
+                </div>
+                <div class="flex justify-center gap-4">
+                  <button id="play-again" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Play Again</button>
+                  <button id="back-to-games" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">Back to Games</button>
+                </div>
+              </div>
+            `;
+            
+            launchConfetti('game-detail');
+            
+            document.getElementById('play-again').onclick = () => {
+              startVerseChallenge();
+            };
+            
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+          }
+          
+          startVerseChallenge();
+          return;
+        }
+        
+        // Bible Color by Number
+        if (game.id === 'bible-colors') {
+          const colorByNumberData = {
+            noah: {
+              title: "Noah's Ark",
+              size: 10,
+              colors: { 1: '#8B4513', 2: '#87CEEB', 3: '#228B22', 4: '#FFD700', 5: '#FF6347' },
+              grid: [
+                [0,0,0,1,1,1,1,0,0,0],
+                [0,0,1,1,1,1,1,1,0,0],
+                [0,1,1,2,2,2,2,1,1,0],
+                [1,1,2,2,2,2,2,2,1,1],
+                [1,1,2,2,3,3,2,2,1,1],
+                [1,1,2,2,3,3,2,2,1,1],
+                [1,1,2,2,2,2,2,2,1,1],
+                [0,1,1,2,2,2,2,1,1,0],
+                [0,0,1,1,1,1,1,1,0,0],
+                [0,0,0,1,1,1,1,0,0,0]
+              ]
+            },
+            cross: {
+              title: "Cross",
+              size: 8,
+              colors: { 1: '#8B4513', 2: '#FFD700', 3: '#FF0000', 4: '#FFFFFF' },
+              grid: [
+                [0,0,0,1,1,0,0,0],
+                [0,0,0,1,1,0,0,0],
+                [0,0,0,1,1,0,0,0],
+                [1,1,1,2,2,1,1,1],
+                [1,1,1,2,2,1,1,1],
+                [0,0,0,1,1,0,0,0],
+                [0,0,0,1,1,0,0,0],
+                [0,0,0,1,1,0,0,0]
+              ]
+            }
+          };
+          
+          let currentPicture = 'noah';
+          let coloredCells = 0;
+          let totalCells = 0;
+          
+          function renderColorByNumber() {
+            const data = colorByNumberData[currentPicture];
+            totalCells = data.grid.flat().filter(cell => cell !== 0).length;
+            
+            gameDetail.innerHTML = `
+              <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+              <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+              <div class="mb-4 text-center">
+                <p class="text-lg mb-2">Color by number: ${data.title}</p>
+                <div class="text-lg font-bold text-blue-600 mb-4">Progress: ${coloredCells} / ${totalCells}</div>
+                <div class="flex justify-center gap-4 mb-4">
+                  ${Object.entries(data.colors).map(([num, color]) => `
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded border-2 border-gray-300" style="background-color: ${color}"></div>
+                      <span class="font-bold">${num}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+              <div class="flex justify-center mb-6">
+                <div id="color-grid" class="grid grid-cols-${data.size} gap-1 bg-white p-4 rounded-lg shadow-lg"></div>
+              </div>
+              <div class="text-center">
+                <button id="reset-colors" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Reset</button>
+                <button id="change-picture" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ml-2">Change Picture</button>
+              </div>
+            `;
+            
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            
+            const gridDiv = document.getElementById('color-grid');
+            gridDiv.innerHTML = '';
+            
+            data.grid.forEach((row, i) => {
+              row.forEach((cell, j) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = 'w-8 h-8 border border-gray-300 cursor-pointer transition-colors';
+                cellDiv.dataset.row = i;
+                cellDiv.dataset.col = j;
+                
+                if (cell === 0) {
+                  cellDiv.style.backgroundColor = '#f0f0f0';
+                } else {
+                  cellDiv.textContent = cell;
+                  cellDiv.style.backgroundColor = '#ffffff';
+                  cellDiv.onclick = () => colorCell(i, j, cell);
+                }
+                
+                gridDiv.appendChild(cellDiv);
+              });
+            });
+            
+            document.getElementById('reset-colors').onclick = () => {
+              coloredCells = 0;
+              updateProgress();
+              gridDiv.querySelectorAll('.w-8').forEach(cell => {
+                if (cell.textContent) {
+                  cell.style.backgroundColor = '#ffffff';
+                }
+              });
+            };
+            
+            document.getElementById('change-picture').onclick = () => {
+              currentPicture = currentPicture === 'noah' ? 'cross' : 'noah';
+              coloredCells = 0;
+              renderColorByNumber();
+            };
+          }
+          
+          function colorCell(row, col, number) {
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            const data = colorByNumberData[currentPicture];
+            
+            if (cell.style.backgroundColor === '#ffffff' || cell.style.backgroundColor === '') {
+              cell.style.backgroundColor = data.colors[number];
+              coloredCells++;
+              updateProgress();
+              
+              if (coloredCells === totalCells) {
+                setTimeout(() => {
+                  gameDetail.querySelector('.text-center').innerHTML += `
+                    <div class="mt-4 text-green-600 font-bold">
+                      <div class="text-2xl mb-2">🎉 Picture Complete! 🎉</div>
+                      <div style="font-size:2rem; animation:bounce 1s infinite alternate;">🎨✨🌟</div>
+                    </div>
+                  `;
+                  launchConfetti('game-detail');
+                }, 500);
+              }
+            }
+          }
+          
+          function updateProgress() {
+            document.querySelector('.text-blue-600').textContent = `Progress: ${coloredCells} / ${totalCells}`;
+          }
+          
+          renderColorByNumber();
+          return;
+        }
+        
+        // Story Builder Game
+        if (game.id === 'story-builder') {
+          const storyElements = {
+            characters: ['Noah', 'Moses', 'David', 'Jesus', 'Daniel', 'Jonah', 'Peter', 'Paul'],
+            settings: ['The Ark', 'The Desert', 'Jerusalem', 'Bethlehem', 'The Temple', 'The Sea', 'The Garden', 'The Mountain'],
+            actions: ['prayed', 'sang', 'helped others', 'showed courage', 'trusted God', 'shared love', 'forgave', 'taught'],
+            objects: ['a rainbow', 'a staff', 'a sling', 'a cross', 'a lion', 'a fish', 'a boat', 'a star']
+          };
+          
+          let currentStory = [];
+          let storyHistory = [];
+          
+          function addToStory(element) {
+            currentStory.push(element);
+            renderStory();
+          }
+          
+          function renderStory() {
+            gameDetail.innerHTML = `
+              <button class="mb-2 text-yellow-500 underline" id="back-to-games">&larr; Back</button>
+              <h3 class="text-2xl font-bold mb-4">${game.title}</h3>
+              <div class="mb-4 text-center">
+                <p class="text-lg mb-2">Build your own Bible story by selecting elements:</p>
+                <div class="text-lg font-bold text-blue-600 mb-4">Story Length: ${currentStory.length} elements</div>
+              </div>
+              <div class="bg-white rounded-lg p-6 shadow-lg mb-6">
+                <h4 class="text-lg font-bold mb-4">Your Story:</h4>
+                <div id="story-display" class="min-h-32 p-4 bg-gray-50 rounded-lg mb-4">
+                  ${currentStory.length === 0 ? '<p class="text-gray-500 text-center">Your story will appear here...</p>' : currentStory.join(' → ')}
+                </div>
+                <div class="flex justify-center gap-4">
+                  <button id="save-story" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">Save Story</button>
+                  <button id="clear-story" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Clear Story</button>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                ${Object.entries(storyElements).map(([category, elements]) => `
+                  <div class="bg-white rounded-lg p-4 shadow-lg">
+                    <h4 class="text-lg font-bold mb-3 text-center">${category.charAt(0).toUpperCase() + category.slice(1)}</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                      ${elements.map(element => `
+                        <button class="story-element-btn p-2 text-sm border border-gray-300 rounded hover:bg-blue-100 transition" data-element="${element}">
+                          ${element}
+                        </button>
+                      `).join('')}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="text-center">
+                <button id="view-saved" class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition">View Saved Stories</button>
+              </div>
+            `;
+            
+            document.getElementById('back-to-games').onclick = () => {
+              gameDetail.classList.add('hidden');
+              gamesList.classList.remove('hidden');
+            };
+            
+            // Add event listeners
+            document.querySelectorAll('.story-element-btn').forEach(btn => {
+              btn.onclick = () => addToStory(btn.dataset.element);
+            });
+            
+            document.getElementById('save-story').onclick = () => {
+              if (currentStory.length > 0) {
+                storyHistory.push([...currentStory]);
+                alert('Story saved!');
+              }
+            };
+            
+            document.getElementById('clear-story').onclick = () => {
+              currentStory = [];
+              renderStory();
+            };
+            
+            document.getElementById('view-saved').onclick = () => {
+              if (storyHistory.length === 0) {
+                alert('No saved stories yet!');
+              } else {
+                const storiesText = storyHistory.map((story, i) => 
+                  `Story ${i + 1}: ${story.join(' → ')}`
+                ).join('\n\n');
+                alert('Saved Stories:\n\n' + storiesText);
+              }
+            };
+          }
+          
+          renderStory();
+          return;
+        }
+        
         let comingSoonMsg = '';
         switch (game.id) {
           case 'ark-builder':
